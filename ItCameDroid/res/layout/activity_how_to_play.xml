@@ -149,7 +149,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="Use o mapa para se guiar em regiões muito apertadas. O amarelo indica as parades da caverna. Pontos azuis indicam monstros, vulcões, a dinamite e o seu personagem." />
+                android:text="Use o mapa para se guiar em regiões muito apertadas. a amarelo indica as paredes da caverna. Pontos azuis indicam monstros, vulcões, a dinamite e o seu personagem." />
 
             <ImageView
                 android:id="@+id/ImageView05"
