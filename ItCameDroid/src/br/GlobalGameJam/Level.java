@@ -95,7 +95,7 @@ public class Level extends TileArea {
 
 		int alive = 0;
 		
-		dead = 0;
+//		dead = 0;
 		
 		for ( Actor a : getActors() ) {
 			if ( a instanceof Monster ) {

@@ -6,24 +6,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.CheckBox;
+import android.widget.Button;
 
 public class MainMenuActivity extends Activity implements OnClickListener {
 
-	private CheckBox chkSound;
 	static boolean needsReset = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_menu);
-		
 		findViewById( R.id.btnStartGame ).setOnClickListener( this );
 		findViewById( R.id.btnHelp ).setOnClickListener( this );
-		//findViewById( R.id.btnLeaderboard ).setOnClickListener( this );
-		findViewById( R.id.btnStartGame ).requestFocus();
-		
-//		chkSound = findViewById( R.id.chkSound );
+		( ( Button ) findViewById( R.id.btnStartGame ) ).requestFocus();
 	}
 
 	public boolean mayEnableSound() {

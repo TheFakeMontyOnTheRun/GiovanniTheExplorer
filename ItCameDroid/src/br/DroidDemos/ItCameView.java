@@ -1,5 +1,7 @@
 package br.DroidDemos;
 
+import java.util.ArrayList;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +11,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Build;
 import android.util.DisplayMetrics;
+import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,6 +47,7 @@ public class ItCameView extends View implements Runnable, VirtualPadClient,
 	public boolean playing = false;
 	public static boolean playSounds = true;
 	long timeSinceAcquiredFocus = 0;
+	boolean drawOnScreenController;
 
 	public static Rect viewport = new Rect();
 
@@ -119,6 +124,8 @@ public class ItCameView extends View implements Runnable, VirtualPadClient,
 
 		controlPadOverlay = BitmapFactory.decodeResource( getResources(), R.drawable.control_brown ); 
 		
+		drawOnScreenController = getGameControllerIds().size() == 0;
+		
 		vPad = new VirtualPad( this );
 
 		this.requestFocus();
@@ -172,6 +179,33 @@ public class ItCameView extends View implements Runnable, VirtualPadClient,
 
 		viewport.set(0, 0, screenWidth, screenHeight );
 	}
+	
+	@SuppressLint("NewApi")
+	@SuppressWarnings("rawtypes")
+	public ArrayList getGameControllerIds() {
+	    ArrayList gameControllerDeviceIds = new ArrayList();
+	    
+	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+	    	
+	    	int[] deviceIds = InputDevice.getDeviceIds();
+	    	for (int deviceId : deviceIds) {
+	    		InputDevice dev = InputDevice.getDevice(deviceId);
+	    		int sources = dev.getSources();
+	    		
+	    		// Verify that the device has gamepad buttons, control sticks, or both.
+	    		if (((sources & InputDevice.SOURCE_GAMEPAD) == InputDevice.SOURCE_GAMEPAD)
+	    				|| ((sources & InputDevice.SOURCE_JOYSTICK)
+	    						== InputDevice.SOURCE_JOYSTICK)) {
+	    			// This device is a game controller. Store its device ID.
+	    			if (!gameControllerDeviceIds.contains(deviceId)) {
+	    				gameControllerDeviceIds.add(deviceId);
+	    			}
+	    		}
+	    	}
+	    }
+	    return gameControllerDeviceIds;
+	}
+
 
 	@Override
 	protected void onDraw(Canvas canvas) {
@@ -189,7 +223,12 @@ public class ItCameView extends View implements Runnable, VirtualPadClient,
 			}
 
 			paint.setARGB(255, 0, 0, 0);
-			vPad.draw(canvas);
+			
+			if ( drawOnScreenController ) {
+				
+				vPad.draw(canvas);
+			}
+			
 			drawMap(canvas);
 			paint.setColor(Color.YELLOW);
 
