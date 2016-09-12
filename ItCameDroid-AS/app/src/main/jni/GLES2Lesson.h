@@ -20,6 +20,7 @@ namespace odb {
 		Ceiling,
 		Hero,
 		Monters,
+		Bomb,
 		Explosion
 	};
 

@@ -25,8 +25,8 @@ namespace odb {
 	const static bool kShouldDestroyThingsManually = false;
 
 	const float GLES2Lesson::billboardVertices[] {
-			-1.0f, 1.0f, 0.0f, 0.0f, .0f,
-			1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+			-1.0f, 3.0f, 0.0f, 0.0f, .0f,
+			1.0f, 3.0f, 0.0f, 1.0f, 0.0f,
 			1.0f, -1.0f, 0.0f, 1.0f, 1.0f,
 			-1.0f, -1.0f, 0.0f, 0.0f, 1.0f,
 	};
@@ -49,23 +49,23 @@ namespace odb {
 //  | /     | /
 // 3|/______|/2
 //x, y, z, r, g, b, u, v
-			-1.0f, 1.0f, 1.0f, 0.0f, 0.0f,    //0
-			1.0f, 1.0f, 1.0f, 1.0f, 0.0f,     //1
+			-1.0f, 4.0f, 1.0f, 0.0f, 0.0f,    //0
+			1.0f, 4.0f, 1.0f, 1.0f, 0.0f,     //1
 			1.0f, -1.0f, 1.0f, 1.0f, 1.0f,   //2
 			-1.0f, -1.0f, 1.0f, 0.0f, 1.0f,   //3
 
-			-1.0f, 1.0f, -1.0f, 0.0f, 0.0f,   //4
-			1.0f, 1.0f, -1.0f, 1.0f, 0.0f,    //5
+			-1.0f, 4.0f, -1.0f, 0.0f, 0.0f,   //4
+			1.0f, 4.0f, -1.0f, 1.0f, 0.0f,    //5
 			1.0f, -1.0f, -1.0f, 1.0f, 1.0f,   //6
 			-1.0f, -1.0f, -1.0f, 0.0f, 1.0f,   //7
 
-			-1.0f, 1.0f, 1.0f, 0.0f, 0.0f,    //8 (0)
-			1.0f, 1.0f, 1.0f, 1.0f, 0.0f,     //9 (1)
+			-1.0f, 4.0f, 1.0f, 0.0f, 0.0f,    //8 (0)
+			1.0f, 4.0f, 1.0f, 1.0f, 0.0f,     //9 (1)
 			1.0f, -1.0f, 1.0f, 1.0f, 1.0f,   //10 (2)
 			-1.0f, -1.0f, 1.0f, 0.0f, 1.0f,   //11 (3)
 
-			-1.0f, 1.0f, -1.0f, 1.0f, 0.0f,   //12 (4)
-			1.0f, 1.0f, -1.0f, 0.0f, 0.0f,    //13 (5)
+			-1.0f, 4.0f, -1.0f, 1.0f, 0.0f,   //12 (4)
+			1.0f, 4.0f, -1.0f, 0.0f, 0.0f,    //13 (5)
 			1.0f, -1.0f, -1.0f, 0.0f, 1.0f,   //14 (6)
 			-1.0f, -1.0f, -1.0f, 1.0f, 1.0f   //15 (7)
 	};
@@ -264,13 +264,13 @@ namespace odb {
 		glm::mat4 viewMatrix;
 		if ( !mCloseUpCamera) {
 			viewMatrix = glm::lookAt(
-					glm::vec3(10.0f, 20.0f, (-50.0f + cameraPosition.y) / 2.0f),
-					glm::vec3(cameraPosition.x, -1.0f, (-50.0f + cameraPosition.y) - 10.0f),
+					glm::vec3(10.0f, 50.0f, (-50.0f + cameraPosition.y) / 2.0f),
+					glm::vec3(cameraPosition.x, -1.0f, (-50.0f + cameraPosition.y) - 25.0f),
 					glm::vec3(0.0f, 1.0, 0.0f));
 		} else {
 			viewMatrix = glm::lookAt(
-					glm::vec3(-10.0f + cameraPosition.x * 2.0f, 2.0f + ( (50.0f - cameraPosition.y) / 2.0f ), -50.0f + cameraPosition.y ),
-					glm::vec3(-10.0f + cameraPosition.x * 2.0f, -1.0f, (-50.0f + cameraPosition.y) - 10.0f),
+					glm::vec3(-10.0f + cameraPosition.x * 2.0f, 10.0f + ( (50.0f - cameraPosition.y) / 2.0f ), -50.0f + cameraPosition.y ),
+					glm::vec3(-10.0f + cameraPosition.x * 2.0f, -1.0f, (-50.0f + cameraPosition.y) - 25.0f),
 					glm::vec3(0.0f, 1.0, 0.0f));
 		};
 
@@ -410,7 +410,7 @@ namespace odb {
 				//walls
 				if ( ETextures::Wall == tile ) {
 
-					glBindTexture(GL_TEXTURE_2D, mTextures[ ETextures::Ceiling ]->mTextureId );
+					glBindTexture(GL_TEXTURE_2D, mTextures[ ETextures::Wall ]->mTextureId );
 					drawGeometry(vboCubeVertexDataIndex,
 					             vboCubeVertexIndicesIndex,
 					             24,
@@ -429,9 +429,9 @@ namespace odb {
 				}
 
 				//characters
-				if ( ETextures::Hero == actor || actor == ETextures::Monters ) {
+				int id = ids[49 - z ][ x ];
+				if (id != 0) {
 
-					int id = ids[49 - z ][ x ];
 					float fx, fz;
 
 					fx = x;

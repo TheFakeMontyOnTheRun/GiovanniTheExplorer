@@ -47,8 +47,6 @@ public class TileArea {
 		setActors(new ArrayList<Actor>());
 		tilePaletteIndexes = tilePaletteIndex;
 		wallPalleteIndexes = wallTiles;
-		int lastx = 0;
-		int lasty = 0;
 		Tile tile;
 		map = new Tile[i][j];
 
@@ -69,29 +67,14 @@ public class TileArea {
 		for (int y = 0; y < j; y++) {
 			
 			for (int x = 0; x < i; x++) {
-				
-				tile = new Tile( baseTypeId,
-						tilePalette[ Math.round( Math.random() * 45 ) == 0 ? 0 : 1 ]
-								.getAndroidBitmap());
-				
-				map[x][y] = tile;
-				
-				tile.setX(lastx);
-				tile.setY(lasty
-						- (tile.getAndroidBitmap().getHeight() - Constants.BASETILEHEIGHT));
-				
-				tile.setY(lasty);
-				
-				lastx += tile.getAndroidBitmap().getWidth();
-				
-				if (tile.getAndroidBitmap().getHeight() > maiorY) {
-					
-					maiorY = tile.getAndroidBitmap().getHeight();
-				}
 
+				tile = new Tile(baseTypeId,
+						tilePalette[Math.round(Math.random() * 45) == 0 ? 0 : 1].getAndroidBitmap());
+
+				map[x][y] = tile;
+				tile.setX(x);
+				tile.setY(y);
 			}
-			lastx = 0;
-			lasty += maiorY;
 		}
 
 	}
@@ -137,8 +120,8 @@ public class TileArea {
 				continue;
 			}
 
-			int currentX = (int) (actor.getPosition().x / Constants.BASETILEWIDTH);
-			int currentY = (int) (actor.getPosition().y / Constants.BASETILEHEIGHT);
+			int currentX = (int) (actor.getPosition().x);
+			int currentY = (int) (actor.getPosition().y);
 			toReturn[currentX][currentY] = actor;
 		}
 
@@ -156,25 +139,13 @@ public class TileArea {
 		}
 
 		Tile tile = map[i][j];
-		tile.setX(tile.getX()
-				+ (tile.getAndroidBitmap().getWidth() - Constants.BASETILEWIDTH));
-		tile.setY(tile.getY()
-				+ (tile.getAndroidBitmap().getHeight() - Constants.BASETILEHEIGHT));
 
-		
-		
 		if ( type != 0 ) {
-			
 			tile.setTile( type, wallPalette[ Math.round( Math.random() * 6 ) != 0 ? 0 : 1 ].getAndroidBitmap());
 		} else {
 			tile.setTile( type, tilePalette[ ( Math.random() * 3 ) == 0 ? 0 : 1 ].getAndroidBitmap() );
 			
 		}
-		
-		tile.setX(tile.getX()
-				- (tile.getAndroidBitmap().getWidth() - Constants.BASETILEWIDTH));
-		tile.setY(tile.getY()
-				- (tile.getAndroidBitmap().getHeight() - Constants.BASETILEHEIGHT));
 	}
 
 	public void move(float x, float y) {
@@ -203,10 +174,7 @@ public class TileArea {
 		}
 
 		getActors().add(actor);
-		int adjustY = -(Constants.BASETILEHEIGHT - actor.getBounds().height()) / 2;
-		int adjustX = (Constants.BASETILEWIDTH - actor.getBounds().width()) / 2;
-		Vec2 vec2 = new Vec2(i * Constants.BASETILEWIDTH + adjustX, j
-				* Constants.BASETILEHEIGHT + adjustY);
+		Vec2 vec2 = new Vec2(i, j);
 		actor.setPosition(vec2);
 	}
 
@@ -255,8 +223,8 @@ public class TileArea {
 	public boolean outsideMap(Actor actor) {
 		Vec2 pos = actor.getPosition();
 		
-		int x = (int) (pos.y / Constants.BASETILEHEIGHT);
-		int y = (int) (pos.x / Constants.BASETILEWIDTH);
+		int x = (int) (pos.y);
+		int y = (int) (pos.x);
 		
 		return x <= 0 || y <= 0 || ( y >= map.length -1 ) || ( x >= map[ x ].length - 1 );
 	}
