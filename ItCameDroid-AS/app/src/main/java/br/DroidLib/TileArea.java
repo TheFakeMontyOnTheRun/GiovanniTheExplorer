@@ -1,12 +1,13 @@
 package br.DroidLib;
 
-import java.util.ArrayList;
-
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import br.GlobalGameJam.Actor;
-import br.GlobalGameJam.Vec2;
+
+import java.util.ArrayList;
+
+import br.odb.giovanni.GlobalGameJam.Actor;
+import br.odb.giovanni.GlobalGameJam.Vec2;
 
 public class TileArea {
 	
@@ -97,20 +98,20 @@ public class TileArea {
 
 	public void draw(Canvas canvas, Paint paint) {
 
-		Actor[][] actorMap = makeSnapshot();
-
-		for (int x = 0; x < dimX; x++) {
-
-			for (int y = 0; y < dimY; y++) {
-
-				map[x][y].draw(canvas, paint);
-
-				if (actorMap[x][y] != null) {
-
-					actorMap[x][y].draw(canvas, paint);
-				}
-			}
-		}
+//		Actor[][] actorMap = makeSnapshot();
+//
+//		for (int x = 0; x < dimX; x++) {
+//
+//			for (int y = 0; y < dimY; y++) {
+//
+//				map[x][y].draw(canvas, paint);
+//
+//				if (actorMap[x][y] != null) {
+//
+//					actorMap[x][y].draw(canvas, paint);
+//				}
+//			}
+//		}
 	}
 
 	private Actor[][] makeSnapshot() {

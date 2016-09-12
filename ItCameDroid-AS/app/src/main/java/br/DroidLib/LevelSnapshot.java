@@ -1,6 +1,6 @@
 package br.DroidLib;
 
-import br.GlobalGameJam.Actor;
+import br.odb.giovanni.GlobalGameJam.Actor;
 
 public class LevelSnapshot {
 	public Actor[][] actorMap;
