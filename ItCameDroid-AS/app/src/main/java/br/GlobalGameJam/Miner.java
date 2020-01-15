@@ -3,7 +3,7 @@ package br.GlobalGameJam;
 import android.content.Context;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
-import br.DroidDemos.ItCameFromTheCaveActivity;
+
 import br.DroidDemos.ItCameView;
 import br.DroidDemos.R;
 import br.DroidLib.Animation;
@@ -13,8 +13,8 @@ public class Miner extends Actor {
 
 	Animation[] animation;
 	MediaPlayer steps = null;
-	
-	public Miner(Resources resources, Context context ) {
+
+	public Miner(Resources resources, Context context) {
 		super();
 		animation = new Animation[4];
 		animation[0] = new Animation();
@@ -43,21 +43,21 @@ public class Miner extends Actor {
 
 		currentFrame = animation[super.getDirection()].getFrameReference(0)
 				.getBitmap();
-		
-		if ( ItCameView.playSounds ) {
-			
-			steps = MediaPlayer.create( context, R.raw.steps );
+
+		if (ItCameView.playSounds) {
+
+			steps = MediaPlayer.create(context, R.raw.steps);
 		}
 		// animation.start();
 
 	}
 
-	
+
 	@Override
 	public void didMove() {
-	
-		if ( steps != null ) {
-			
+
+		if (steps != null) {
+
 			steps.start();
 		}
 	}
@@ -76,11 +76,11 @@ public class Miner extends Actor {
 	}
 
 	@Override
-	public void tick( long timeInMS ) {
+	public void tick(long timeInMS) {
 		if (getState() == states.MOVING) {
-			
-			animation[super.getDirection()].tick( timeInMS );
-			
+
+			animation[super.getDirection()].tick(timeInMS);
+
 			currentFrame = animation[super.getDirection()]
 					.getCurrentFrameReference().getBitmap();
 		}
@@ -89,9 +89,9 @@ public class Miner extends Actor {
 	@Override
 	public void touched(Actor actor) {
 
-		if ( actor instanceof Monster ) {
-			
-			kill();		
+		if (actor instanceof Monster) {
+
+			kill();
 		}
 	}
 }

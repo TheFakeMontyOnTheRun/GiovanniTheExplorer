@@ -10,14 +10,6 @@ public class Frame {
 	}
 
 	/**
-	 * @param sound
-	 *            the sound to set
-	 */
-	public void setSound(Sound sound) {
-		this.sound = sound;
-	}
-
-	/**
 	 * @return the sound
 	 */
 	public Sound getSound() {
@@ -25,11 +17,10 @@ public class Frame {
 	}
 
 	/**
-	 * @param bitmap
-	 *            the bitmap to set
+	 * @param sound the sound to set
 	 */
-	public void setBitmap(br.DroidLib.Bitmap bitmap) {
-		this.bitmap = bitmap;
+	public void setSound(Sound sound) {
+		this.sound = sound;
 	}
 
 	/**
@@ -37,6 +28,13 @@ public class Frame {
 	 */
 	public br.DroidLib.Bitmap getBitmap() {
 		return bitmap;
+	}
+
+	/**
+	 * @param bitmap the bitmap to set
+	 */
+	public void setBitmap(br.DroidLib.Bitmap bitmap) {
+		this.bitmap = bitmap;
 	}
 
 	public void prepareForGC() {

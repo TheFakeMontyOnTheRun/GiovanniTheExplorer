@@ -2,17 +2,15 @@ package br.DroidLib;
 
 import java.util.ArrayList;
 
-import android.util.Log;
-
 public class Animation implements Runnable {
+	public boolean play;
+	long interval;
 	private int framesPerSecond;
 	private ArrayList<Frame> frames;
 	private int currentFrame;
 	private boolean loop;
-	public boolean play;
 	private Thread controller;
-	long interval;
-	
+
 	public Animation() {
 		frames = new ArrayList<Frame>();
 		currentFrame = 0;
@@ -25,20 +23,12 @@ public class Animation implements Runnable {
 
 	@Override
 	public void run() {
-		
-		while ( play) {
+
+		while (play) {
 			// if (currentFrame==frames.size()-1)
 			// parar=true;
-			tick( interval );
+			tick(interval);
 		}
-	}
-
-	/**
-	 * @param framesPerSeconds
-	 *            the framesPerSeconds to set
-	 */
-	public void setFramesPerSecond(int framesPerSeconds) {
-		this.framesPerSecond = framesPerSeconds;
 	}
 
 	/**
@@ -49,11 +39,10 @@ public class Animation implements Runnable {
 	}
 
 	/**
-	 * @param frames
-	 *            the frames to set
+	 * @param framesPerSeconds the framesPerSeconds to set
 	 */
-	public void setFrames(ArrayList<Frame> frames) {
-		this.frames = frames;
+	public void setFramesPerSecond(int framesPerSeconds) {
+		this.framesPerSecond = framesPerSeconds;
 	}
 
 	/**
@@ -64,11 +53,10 @@ public class Animation implements Runnable {
 	}
 
 	/**
-	 * @param currentFrame
-	 *            the currentFrame to set
+	 * @param frames the frames to set
 	 */
-	public void setCurrentFrame(int currentFrame) {
-		this.currentFrame = currentFrame;
+	public void setFrames(ArrayList<Frame> frames) {
+		this.frames = frames;
 	}
 
 	/**
@@ -79,11 +67,10 @@ public class Animation implements Runnable {
 	}
 
 	/**
-	 * @param loop
-	 *            the loop to set
+	 * @param currentFrame the currentFrame to set
 	 */
-	public void setLoop(boolean loop) {
-		this.loop = loop;
+	public void setCurrentFrame(int currentFrame) {
+		this.currentFrame = currentFrame;
 	}
 
 	/**
@@ -91,6 +78,13 @@ public class Animation implements Runnable {
 	 */
 	public boolean isLoop() {
 		return loop;
+	}
+
+	/**
+	 * @param loop the loop to set
+	 */
+	public void setLoop(boolean loop) {
+		this.loop = loop;
 	}
 
 	public void addFrame(br.DroidLib.Bitmap bitmap) {
@@ -111,18 +105,18 @@ public class Animation implements Runnable {
 		return frames.get(i);
 	}
 
-	public void tick( long timeInMS ) {
-		
-		if ( play ) {
+	public void tick(long timeInMS) {
+
+		if (play) {
 			currentFrame++;
 		}
-		
-		if (currentFrame == frames.size() ) {
+
+		if (currentFrame == frames.size()) {
 
 			currentFrame = 0;
-			
-			if ( !loop ) {
-				
+
+			if (!loop) {
+
 				play = false;
 			}
 		}
@@ -131,11 +125,11 @@ public class Animation implements Runnable {
 	public void prepareForGC() {
 		play = false;
 		Thread.yield();
-		
-		for ( Frame f : frames ) {
+
+		for (Frame f : frames) {
 			f.prepareForGC();
 		}
-		
+
 		frames.clear();
 		frames = null;
 	}

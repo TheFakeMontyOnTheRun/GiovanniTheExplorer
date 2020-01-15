@@ -1,15 +1,12 @@
 package br.GlobalGameJam;
 
 
-
-public class CreateMonsterTimer implements Runnable
-{
+public class CreateMonsterTimer implements Runnable {
 	br.DroidLib.Timer timer;
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

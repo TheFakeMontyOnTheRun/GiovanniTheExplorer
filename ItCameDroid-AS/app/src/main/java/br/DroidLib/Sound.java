@@ -1,6 +1,5 @@
 package br.DroidLib;
 
-public class Sound
-{
+public class Sound {
 
 }

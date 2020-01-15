@@ -2,6 +2,7 @@ package br.GlobalGameJam;
 
 import android.content.res.Resources;
 import android.media.MediaPlayer;
+
 import br.DroidDemos.R;
 import br.DroidLib.Animation;
 import br.DroidLib.Bitmap;
@@ -10,11 +11,11 @@ import br.DroidLib.Constants;
 public class Monster extends Actor {
 	Actor target;
 	long timeToMove;
+	int turnToPlaySound;
 	private MediaPlayer kill;
 	private MediaPlayer walk1;
-	int turnToPlaySound;
 
-	public Monster(Resources resources, MediaPlayer walk1, MediaPlayer walk2, MediaPlayer kill ) {
+	public Monster(Resources resources, MediaPlayer walk1, MediaPlayer walk2, MediaPlayer kill) {
 		super();
 
 		animation = new Animation();
@@ -24,7 +25,7 @@ public class Monster extends Actor {
 		currentFrame = animation.getFrameReference(0).getBitmap();
 		this.kill = kill;
 		this.walk1 = walk1;
-		
+
 		this.setDirection(3);
 	}
 
@@ -70,16 +71,16 @@ public class Monster extends Actor {
 
 			this.move(Constants.BASETILEWIDTH * (dirX),
 					Constants.BASETILEHEIGHT * (dirY));
-			
+
 			//tenta se desvencilhar do obstáculo.
-		} else if (level.mayMoveTo( currentX, currentY + 0.5f ) ) {
-			this.move( 0, Constants.BASETILEHEIGHT * ( 0.5f ) );
-		} else if (level.mayMoveTo( currentX + 0.5f, currentY ) ) {
-			this.move( Constants.BASETILEWIDTH * ( 0.5f ), 0.0f );
-		} else if ( level.mayMoveTo( currentX - 0.5f, currentY ) ) {
-			this.move( Constants.BASETILEWIDTH * ( - 0.5f ), 0.0f );
-		} else if (level.mayMoveTo( currentX, currentY - 0.5f ) ) {
-			this.move( 0, Constants.BASETILEHEIGHT * ( 0.5f ) );
+		} else if (level.mayMoveTo(currentX, currentY + 0.5f)) {
+			this.move(0, Constants.BASETILEHEIGHT * (0.5f));
+		} else if (level.mayMoveTo(currentX + 0.5f, currentY)) {
+			this.move(Constants.BASETILEWIDTH * (0.5f), 0.0f);
+		} else if (level.mayMoveTo(currentX - 0.5f, currentY)) {
+			this.move(Constants.BASETILEWIDTH * (-0.5f), 0.0f);
+		} else if (level.mayMoveTo(currentX, currentY - 0.5f)) {
+			this.move(0, Constants.BASETILEHEIGHT * (0.5f));
 		}
 	}
 
@@ -91,19 +92,19 @@ public class Monster extends Actor {
 	@Override
 	public void touched(Actor actor) {
 		if (actor instanceof Monster) {
-			
-			if ( kill != null ) {
-				
+
+			if (kill != null) {
+
 				kill.start();
 			}
-				
+
 			kill();
 		}
 	}
 
 	@Override
 	public void didMove() {
-		
+
 //		if ( turnToPlaySound == 0 && walk1 != null && !walk1.isPlaying() ) {
 //			
 //			if ( walk1 != null ) {

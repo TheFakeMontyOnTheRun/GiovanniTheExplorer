@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package br.DroidLib;
 
@@ -9,11 +9,12 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
+
 import br.DroidDemos.VirtualPadClient;
 
 /**
  * @author monty
- * 
+ *
  */
 public class VirtualPad extends Drawable {
 	public static final int KB_UP = 0;
@@ -73,26 +74,26 @@ public class VirtualPad extends Drawable {
 			else
 				paint.setARGB(64, 255, 0, 0);
 
-			canvas.drawCircle( vKeys[ c ].exactCenterX(), vKeys[ c ].exactCenterY(), vKeys[ c ].width(), paint );
+			canvas.drawCircle(vKeys[c].exactCenterX(), vKeys[c].exactCenterY(), vKeys[c].width(), paint);
 		}
-		
-		synchronized( listener ) {
-			
+
+		synchronized (listener) {
+
 			android.graphics.Bitmap overlay = listener.getBitmapOverlay();
-			
-			if ( overlay != null ) {
+
+			if (overlay != null) {
 				paint.setARGB(128, 0, 0, 0);
 				Rect rect = new Rect();
-				
-				rect.top = (int) vKeys[ 0 ].exactCenterY();
-				rect.bottom = (int) vKeys[ 2 ].exactCenterY();
-				rect.left = (int) vKeys[ 3 ].exactCenterX();
-				rect.right = (int) vKeys[ 1 ].exactCenterX();
-				
-				canvas.drawBitmap( overlay, null, rect, paint );
+
+				rect.top = (int) vKeys[0].exactCenterY();
+				rect.bottom = (int) vKeys[2].exactCenterY();
+				rect.left = (int) vKeys[3].exactCenterX();
+				rect.right = (int) vKeys[1].exactCenterX();
+
+				canvas.drawBitmap(overlay, null, rect, paint);
 			}
 		}
-		
+
 
 		paint.setARGB(255, 0, 0, 0);
 	}
@@ -114,7 +115,7 @@ public class VirtualPad extends Drawable {
 
 		lastTouch1.set((int) event.getX() - 25, (int) event.getY() - 25,
 				(int) (event.getX() + 25), (int) (event.getY() + 25));
-		
+
 		return updateTouch((event.getAction() != MotionEvent.ACTION_UP));
 	}
 

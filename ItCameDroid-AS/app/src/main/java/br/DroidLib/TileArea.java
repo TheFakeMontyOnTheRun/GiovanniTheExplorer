@@ -1,25 +1,78 @@
 package br.DroidLib;
 
-import java.util.ArrayList;
-
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+
+import java.util.ArrayList;
+
 import br.GlobalGameJam.Actor;
 import br.GlobalGameJam.Vec2;
 
 public class TileArea {
-	
+
 	public Tile[][] map;
-	private int dimX;
-	private int dimY;
+	protected ArrayList<Actor> actors;
 	Tile[] tilePalette;
 	Tile[] wallPalette;
-
 	int[] tilePaletteIndexes;
-	protected ArrayList<Actor> actors;
+	private int dimX;
+	private int dimY;
 	private LevelSnapshot snapshot;
 	private int[] wallPalleteIndexes;
+
+	public TileArea(int i, int j, int baseTypeId, Resources resources,
+					int[] tilePaletteIndex, int chancesTile, int[] wallTiles, int chancesWall) {
+		setActors(new ArrayList<Actor>());
+		tilePaletteIndexes = tilePaletteIndex;
+		wallPalleteIndexes = wallTiles;
+		int lastx = 0;
+		int lasty = 0;
+		Tile tile;
+		map = new Tile[i][j];
+
+		dimX = i;
+		dimY = j;
+		int maiorY = 0;
+		tilePalette = new Tile[2];
+		wallPalette = new Tile[2];
+
+		for (int c = 0; c < tilePaletteIndexes.length; c++)
+			tilePalette[c] = new Tile(resources, tilePaletteIndexes[c]);
+
+		for (int c = 0; c < wallTiles.length; c++)
+			wallPalette[c] = new Tile(resources, wallTiles[c]);
+
+
+		for (int y = 0; y < j; y++) {
+
+			for (int x = 0; x < i; x++) {
+
+				tile = new Tile(baseTypeId,
+						tilePalette[Math.round(Math.random() * 45) == 0 ? 0 : 1]
+								.getAndroidBitmap());
+
+				map[x][y] = tile;
+
+				tile.setX(lastx);
+				tile.setY(lasty
+						- (tile.getAndroidBitmap().getHeight() - Constants.BASETILEHEIGHT));
+
+				tile.setY(lasty);
+
+				lastx += tile.getAndroidBitmap().getWidth();
+
+				if (tile.getAndroidBitmap().getHeight() > maiorY) {
+
+					maiorY = tile.getAndroidBitmap().getHeight();
+				}
+
+			}
+			lastx = 0;
+			lasty += maiorY;
+		}
+
+	}
 
 	public Tile getTile(int x, int y) {
 		return map[x][y];
@@ -39,60 +92,6 @@ public class TileArea {
 
 	public Tile getTileAt(int x, int y) {
 		return map[x][y];
-	}
-
-	public TileArea(int i, int j, int baseTypeId, Resources resources,
-			int[] tilePaletteIndex, int chancesTile, int[] wallTiles, int chancesWall) {
-		setActors(new ArrayList<Actor>());
-		tilePaletteIndexes = tilePaletteIndex;
-		wallPalleteIndexes = wallTiles;
-		int lastx = 0;
-		int lasty = 0;
-		Tile tile;
-		map = new Tile[i][j];
-
-		dimX = i;
-		dimY = j;
-		int maiorY = 0;
-		tilePalette = new Tile[2];
-		wallPalette = new Tile[2];
-		
-		for (int c = 0; c < tilePaletteIndexes.length; c++)
-			tilePalette[c] = new Tile(resources, tilePaletteIndexes[c]);
-		
-		for (int c = 0; c < wallTiles.length; c++)
-			wallPalette[c] = new Tile(resources, wallTiles[c]);
-		
-		
-
-		for (int y = 0; y < j; y++) {
-			
-			for (int x = 0; x < i; x++) {
-				
-				tile = new Tile( baseTypeId,
-						tilePalette[ Math.round( Math.random() * 45 ) == 0 ? 0 : 1 ]
-								.getAndroidBitmap());
-				
-				map[x][y] = tile;
-				
-				tile.setX(lastx);
-				tile.setY(lasty
-						- (tile.getAndroidBitmap().getHeight() - Constants.BASETILEHEIGHT));
-				
-				tile.setY(lasty);
-				
-				lastx += tile.getAndroidBitmap().getWidth();
-				
-				if (tile.getAndroidBitmap().getHeight() > maiorY) {
-					
-					maiorY = tile.getAndroidBitmap().getHeight();
-				}
-
-			}
-			lastx = 0;
-			lasty += maiorY;
-		}
-
 	}
 
 	public void draw(Canvas canvas, Paint paint) {
@@ -144,7 +143,7 @@ public class TileArea {
 		return toReturn;
 	}
 
-	public void setTileType(int i, int j, int type ) {
+	public void setTileType(int i, int j, int type) {
 
 		if (i < 0 || i >= map.length) {
 			return;
@@ -160,16 +159,15 @@ public class TileArea {
 		tile.setY(tile.getY()
 				+ (tile.getAndroidBitmap().getHeight() - Constants.BASETILEHEIGHT));
 
-		
-		
-		if ( type != 0 ) {
-			
-			tile.setTile( type, wallPalette[ Math.round( Math.random() * 6 ) != 0 ? 0 : 1 ].getAndroidBitmap());
+
+		if (type != 0) {
+
+			tile.setTile(type, wallPalette[Math.round(Math.random() * 6) != 0 ? 0 : 1].getAndroidBitmap());
 		} else {
-			tile.setTile( type, tilePalette[ ( Math.random() * 3 ) == 0 ? 0 : 1 ].getAndroidBitmap() );
-			
+			tile.setTile(type, tilePalette[(Math.random() * 3) == 0 ? 0 : 1].getAndroidBitmap());
+
 		}
-		
+
 		tile.setX(tile.getX()
 				- (tile.getAndroidBitmap().getWidth() - Constants.BASETILEWIDTH));
 		tile.setY(tile.getY()
@@ -211,7 +209,7 @@ public class TileArea {
 
 	public void tick(long timeInMS) {
 
-		
+
 		for (Actor a : getActors()) {
 
 			if (a.killed) {
@@ -253,10 +251,10 @@ public class TileArea {
 
 	public boolean outsideMap(Actor actor) {
 		Vec2 pos = actor.getPosition();
-		
+
 		int x = (int) (pos.y / Constants.BASETILEHEIGHT);
 		int y = (int) (pos.x / Constants.BASETILEWIDTH);
-		
-		return x <= 0 || y <= 0 || ( y >= map.length -1 ) || ( x >= map[ x ].length - 1 );
+
+		return x <= 0 || y <= 0 || (y >= map.length - 1) || (x >= map[x].length - 1);
 	}
 }

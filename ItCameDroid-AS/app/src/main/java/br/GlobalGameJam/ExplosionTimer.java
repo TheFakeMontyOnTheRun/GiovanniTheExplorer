@@ -1,18 +1,15 @@
 package br.GlobalGameJam;
 
-public class ExplosionTimer implements Runnable
-{	
+public class ExplosionTimer implements Runnable {
 	br.DroidLib.Timer timer;
-	
-	public ExplosionTimer()
-	{
-		
+
+	public ExplosionTimer() {
+
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

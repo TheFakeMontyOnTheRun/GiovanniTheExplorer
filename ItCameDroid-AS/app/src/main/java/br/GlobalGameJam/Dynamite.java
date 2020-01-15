@@ -3,18 +3,19 @@ package br.GlobalGameJam;
 import android.content.Context;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
+
 import br.DroidDemos.ItCameView;
 import br.DroidDemos.R;
 import br.DroidLib.Animation;
 import br.DroidLib.Bitmap;
 
 public class Dynamite extends Actor {
-	
+
 	public long timeToBlow;
 	private Animation blowAnimation;
 	private MediaPlayer boomSound = null;
 
-	public Dynamite(Resources resources, Context context ) {
+	public Dynamite(Resources resources, Context context) {
 		super();
 
 		timeToBlow = 100 * 1000;
@@ -34,11 +35,11 @@ public class Dynamite extends Actor {
 
 		currentFrame = animation.getFrameReference(0).getBitmap();
 
-		if ( ItCameView.playSounds ) {
-			
-			boomSound = MediaPlayer.create( context, R.raw.boom );
+		if (ItCameView.playSounds) {
+
+			boomSound = MediaPlayer.create(context, R.raw.boom);
 		}
-		
+
 		this.setDirection(3);
 	}
 
@@ -52,8 +53,8 @@ public class Dynamite extends Actor {
 		if (timeToBlow < 0 && animation != blowAnimation) {
 			animation = blowAnimation;
 
-			if ( boomSound != null ) {
-				
+			if (boomSound != null) {
+
 				boomSound.start();
 			}
 		}
@@ -65,7 +66,7 @@ public class Dynamite extends Actor {
 
 	@Override
 	public void touched(Actor actor) {
-		if ( !killed ) {			
+		if (!killed) {
 			actor.kill();
 		}
 	}
