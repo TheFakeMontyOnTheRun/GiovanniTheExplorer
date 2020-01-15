@@ -10,15 +10,15 @@ public abstract class Actor {
 
 	public Level level;
 	public boolean killed;
-	public boolean visible = true;
-	protected Animation animation;
+	private boolean visible = true;
+	Animation animation;
 	Bitmap currentFrame;
 	private Vec2 position;
 	private int direction;
 	private Rect bounds;
 	private states state;
 
-	public Actor() {
+	Actor() {
 		bounds = new Rect();
 		setDirection(0);
 		setPosition(new Vec2(0, 0));
@@ -30,11 +30,11 @@ public abstract class Actor {
 		currentFrame = animation.getCurrentFrameReference().getBitmap();
 	}
 
-	public Vec2 getScreenPosition() {
+	private Vec2 getScreenPosition() {
 		Vec2 toReturn = new Vec2();
 
-		toReturn.x = (-Level.camera.x + (ItCameView.viewport.right / 2) + getPosition().x - currentFrame.getAndroidBitmap().getWidth() / 2);
-		toReturn.y = (-Level.camera.y + (ItCameView.viewport.bottom / 2) + getPosition().y - currentFrame.getAndroidBitmap().getHeight() + (br.DroidLib.Constants.BASETILEHEIGHT / 2));
+		toReturn.x = (-Level.camera.x + (ItCameView.viewport.right / 2.0f) + getPosition().x - currentFrame.getAndroidBitmap().getWidth() / 2.0f);
+		toReturn.y = (-Level.camera.y + (ItCameView.viewport.bottom / 2.0f) + getPosition().y - currentFrame.getAndroidBitmap().getHeight() + (br.DroidLib.Constants.BASETILEHEIGHT / 2.0f));
 
 		return toReturn;
 
@@ -59,9 +59,7 @@ public abstract class Actor {
 		}
 	}
 
-	;
-
-	public void move(float x, float y) {
+	void move(float x, float y) {
 		move((int) x, (int) y);
 		didMove();
 	}
@@ -77,7 +75,7 @@ public abstract class Actor {
 		didMove();
 	}
 
-	public void moveTo(int x, int y) {
+	private void moveTo(int x, int y) {
 		position.x = x;
 		position.y = y;
 		didMove();
@@ -86,7 +84,7 @@ public abstract class Actor {
 	/**
 	 * @return the direction
 	 */
-	public int getDirection() {
+	int getDirection() {
 		return direction;
 	}
 
@@ -105,7 +103,6 @@ public abstract class Actor {
 	}
 
 	/**
-	 * @param position the position to set
 	 */
 	public void setPosition(Vec2 Position) {
 		position = Position;
@@ -119,18 +116,18 @@ public abstract class Actor {
 	/**
 	 * @return the state
 	 */
-	public states getState() {
+	states getState() {
 		return state;
 	}
 
 	/**
 	 * @param state the state to set
 	 */
-	public void setState(states state) {
+	void setState(states state) {
 		this.state = state;
 	}
 
-	public void kill() {
+	void kill() {
 //		position = null;
 //		bounds = null;
 //		state = null;
@@ -143,7 +140,7 @@ public abstract class Actor {
 
 	public abstract void touched(Actor actor);
 
-	public abstract void didMove();
+	protected abstract void didMove();
 
 	public void prepareForGC() {
 		position = null;

@@ -1,6 +1,6 @@
 package br.GlobalGameJam;
 
-public class ExplosionTimer implements Runnable {
+class ExplosionTimer implements Runnable {
 	br.DroidLib.Timer timer;
 
 	public ExplosionTimer() {

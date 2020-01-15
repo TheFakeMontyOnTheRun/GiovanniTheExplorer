@@ -3,7 +3,6 @@ package br.DroidLib;
 public class Timer implements Runnable {
 
 	private int secsToWait;
-	private Thread waitTimer;
 	private Thread callback;
 
 	/**
@@ -35,7 +34,7 @@ public class Timer implements Runnable {
 	}
 
 	public void start() {
-		waitTimer = new Thread(this, "timer ticker");
+		Thread waitTimer = new Thread(this, "timer ticker");
 		waitTimer.start();
 	}
 

@@ -12,8 +12,7 @@ import br.DroidLib.Bitmap;
 public class MonsterMother extends Actor {
 
 	private long timeEllapsed;
-	private Resources resources;
-	private Context context;
+	private final Resources resources;
 	private MediaPlayer spawnSound = null;
 	private MediaPlayer kill = null;
 	private MediaPlayer walk1 = null;
@@ -31,7 +30,6 @@ public class MonsterMother extends Actor {
 //		animation.addFrame(new Bitmap(resources, R.drawable.mom3));
 //		animation.addFrame(new Bitmap(resources, R.drawable.mom4));
 		currentFrame = animation.getFrameReference(0).getBitmap();
-		this.context = context;
 
 		if (ItCameView.playSounds) {
 

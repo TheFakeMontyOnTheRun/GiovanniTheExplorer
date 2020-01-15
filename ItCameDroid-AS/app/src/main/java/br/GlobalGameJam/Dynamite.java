@@ -12,7 +12,7 @@ import br.DroidLib.Bitmap;
 public class Dynamite extends Actor {
 
 	public long timeToBlow;
-	private Animation blowAnimation;
+	private final Animation blowAnimation;
 	private MediaPlayer boomSound = null;
 
 	public Dynamite(Resources resources, Context context) {

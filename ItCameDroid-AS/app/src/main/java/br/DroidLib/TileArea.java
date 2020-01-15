@@ -11,21 +11,19 @@ import br.GlobalGameJam.Vec2;
 
 public class TileArea {
 
-	public Tile[][] map;
+	private final Tile[][] map;
 	protected ArrayList<Actor> actors;
-	Tile[] tilePalette;
-	Tile[] wallPalette;
-	int[] tilePaletteIndexes;
-	private int dimX;
-	private int dimY;
+	private final Tile[] tilePalette;
+	private final Tile[] wallPalette;
+	private final int[] tilePaletteIndexes;
+	private final int dimX;
+	private final int dimY;
 	private LevelSnapshot snapshot;
-	private int[] wallPalleteIndexes;
 
-	public TileArea(int i, int j, int baseTypeId, Resources resources,
-					int[] tilePaletteIndex, int chancesTile, int[] wallTiles, int chancesWall) {
+	protected TileArea(int i, int j, int baseTypeId, Resources resources,
+					   int[] tilePaletteIndex, int chancesTile, int[] wallTiles, int chancesWall) {
 		setActors(new ArrayList<Actor>());
 		tilePaletteIndexes = tilePaletteIndex;
-		wallPalleteIndexes = wallTiles;
 		int lastx = 0;
 		int lasty = 0;
 		Tile tile;
@@ -178,7 +176,7 @@ public class TileArea {
 		move((int) x, (int) y);
 	}
 
-	public void move(int x, int y) {
+	private void move(int x, int y) {
 
 		for (int i = 0; i < dimX; i++)
 			for (int j = 0; j < dimY; j++) {
@@ -245,11 +243,11 @@ public class TileArea {
 		return actors;
 	}
 
-	public void setActors(ArrayList<Actor> actors) {
+	private void setActors(ArrayList<Actor> actors) {
 		this.actors = actors;
 	}
 
-	public boolean outsideMap(Actor actor) {
+	protected boolean outsideMap(Actor actor) {
 		Vec2 pos = actor.getPosition();
 
 		int x = (int) (pos.y / Constants.BASETILEHEIGHT);

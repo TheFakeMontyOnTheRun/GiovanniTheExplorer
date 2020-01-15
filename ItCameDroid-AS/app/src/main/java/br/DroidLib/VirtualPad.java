@@ -1,14 +1,14 @@
-/**
- *
- */
 package br.DroidLib;
 
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
+
+import org.jetbrains.annotations.NotNull;
 
 import br.DroidDemos.VirtualPadClient;
 
@@ -23,12 +23,12 @@ public class VirtualPad extends Drawable {
 	public static final int KB_LEFT = 3;
 	public static final int KB_FIRE = 4;
 
-	private boolean[] keyMap;
+	private final boolean[] keyMap;
 
-	private Rect[] vKeys;
-	private Rect lastTouch1;
-	private Paint paint;
-	private VirtualPadClient listener;
+	private final Rect[] vKeys;
+	private final Rect lastTouch1;
+	private final Paint paint;
+	private final VirtualPadClient listener;
 
 	public VirtualPad(VirtualPadClient listener) {
 		super();
@@ -66,7 +66,7 @@ public class VirtualPad extends Drawable {
 	}
 
 	@Override
-	public void draw(Canvas canvas) {
+	public void draw(@NotNull Canvas canvas) {
 		for (int c = 0; c < vKeys.length; c++) {
 
 			if (keyMap[c])
@@ -100,7 +100,7 @@ public class VirtualPad extends Drawable {
 
 	@Override
 	public int getOpacity() {
-		return 0;
+		return PixelFormat.TRANSPARENT;
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public class VirtualPad extends Drawable {
 		return updateTouch((event.getAction() != MotionEvent.ACTION_UP));
 	}
 
-	public boolean updateTouch(boolean down) {
+	private boolean updateTouch(boolean down) {
 
 		boolean returnValue = false;
 

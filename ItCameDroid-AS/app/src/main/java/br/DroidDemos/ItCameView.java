@@ -9,7 +9,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.InputDevice;
 import android.view.KeyEvent;
@@ -18,6 +17,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import br.DroidLib.Constants;
 import br.DroidLib.VirtualPad;
@@ -37,19 +37,18 @@ public class ItCameView extends View implements Runnable, VirtualPadClient,
 	private static final int KB_DOWN = 2;
 	private static final int KB_LEFT = 3;
 	public static boolean playSounds = true;
-	public static Rect viewport = new Rect();
+	public static final Rect viewport = new Rect();
 	private static Level level;
 	public boolean playing = false;
-	MiniMapWidget map;
-	long timeSinceAcquiredFocus = 0;
-	boolean drawOnScreenController;
-	private VirtualPad vPad;
-	private boolean[] keyMap;
+	private long timeSinceAcquiredFocus = 0;
+	private final boolean drawOnScreenController;
+	private final VirtualPad vPad;
+	private final boolean[] keyMap;
 	private boolean running = true;
-	private Paint paint;
-	private Vec2 camera;
-	private Miner actor;
-	private Bitmap controlPadOverlay;
+	private final Paint paint;
+	private final Vec2 camera;
+	private final Miner actor;
+	private final Bitmap controlPadOverlay;
 
 	public ItCameView(Context context) {
 		super(context);
@@ -60,7 +59,7 @@ public class ItCameView extends View implements Runnable, VirtualPadClient,
 
 		android.media.AudioManager am = (android.media.AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
 
-		switch (am.getRingerMode()) {
+		switch (Objects.requireNonNull(am).getRingerMode()) {
 			case android.media.AudioManager.RINGER_MODE_SILENT:
 			case android.media.AudioManager.RINGER_MODE_VIBRATE:
 				playSounds = false;
@@ -90,7 +89,7 @@ public class ItCameView extends View implements Runnable, VirtualPadClient,
 			MainMenuActivity.needsReset = false;
 		}
 
-		map = new MiniMapWidget(level);
+		MiniMapWidget map = new MiniMapWidget(level);
 
 		actor = level.getMiner();
 
@@ -180,27 +179,25 @@ public class ItCameView extends View implements Runnable, VirtualPadClient,
 		viewport.set(0, 0, screenWidth, screenHeight);
 	}
 
-	public ArrayList getGameControllerIds() {
+	private ArrayList getGameControllerIds() {
 		ArrayList gameControllerDeviceIds = new ArrayList();
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+		int[] deviceIds = InputDevice.getDeviceIds();
+		for (int deviceId : deviceIds) {
+			InputDevice dev = InputDevice.getDevice(deviceId);
+			int sources = dev.getSources();
 
-			int[] deviceIds = InputDevice.getDeviceIds();
-			for (int deviceId : deviceIds) {
-				InputDevice dev = InputDevice.getDevice(deviceId);
-				int sources = dev.getSources();
-
-				// Verify that the device has gamepad buttons, control sticks, or both.
-				if (((sources & InputDevice.SOURCE_GAMEPAD) == InputDevice.SOURCE_GAMEPAD)
-						|| ((sources & InputDevice.SOURCE_JOYSTICK)
-						== InputDevice.SOURCE_JOYSTICK)) {
-					// This device is a game controller. Store its device ID.
-					if (!gameControllerDeviceIds.contains(deviceId)) {
-						gameControllerDeviceIds.add(deviceId);
-					}
+			// Verify that the device has gamepad buttons, control sticks, or both.
+			if (((sources & InputDevice.SOURCE_GAMEPAD) == InputDevice.SOURCE_GAMEPAD)
+					|| ((sources & InputDevice.SOURCE_JOYSTICK)
+					== InputDevice.SOURCE_JOYSTICK)) {
+				// This device is a game controller. Store its device ID.
+				if (!gameControllerDeviceIds.contains(deviceId)) {
+					gameControllerDeviceIds.add(deviceId);
 				}
 			}
 		}
+
 		return gameControllerDeviceIds;
 	}
 
@@ -220,7 +217,7 @@ public class ItCameView extends View implements Runnable, VirtualPadClient,
 				level.draw(canvas, paint);
 			}
 
-			paint.setARGB(255, 0, 0, 0);
+			Objects.requireNonNull(paint).setARGB(255, 0, 0, 0);
 
 			if (drawOnScreenController) {
 
@@ -243,7 +240,6 @@ public class ItCameView extends View implements Runnable, VirtualPadClient,
 
 		if (timeSinceAcquiredFocus > 0) {
 			String text = "Jogo começando em " + (timeSinceAcquiredFocus / 1000);
-			Rect bounds = new Rect();
 			paint.getTextBounds(text, 0, text.length(), bounds);
 			float prevSize = paint.getTextSize();
 			paint.setTextSize(30);
@@ -251,6 +247,8 @@ public class ItCameView extends View implements Runnable, VirtualPadClient,
 			paint.setTextSize(prevSize);
 		}
 	}
+
+	final Rect bounds = new Rect();
 
 	private void drawMap(Canvas canvas) {
 
@@ -321,7 +319,7 @@ public class ItCameView extends View implements Runnable, VirtualPadClient,
 
 			handleKeys(keyMap);
 
-			this.level.tick(INTERVAL);
+			level.tick(INTERVAL);
 
 			if (level.gameShouldEnd) {
 				running = false;

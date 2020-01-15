@@ -10,10 +10,9 @@ import br.DroidLib.Constants;
 
 public class Monster extends Actor {
 	Actor target;
-	long timeToMove;
+	private long timeToMove;
 	int turnToPlaySound;
-	private MediaPlayer kill;
-	private MediaPlayer walk1;
+	private final MediaPlayer kill;
 
 	public Monster(Resources resources, MediaPlayer walk1, MediaPlayer walk2, MediaPlayer kill) {
 		super();
@@ -24,7 +23,6 @@ public class Monster extends Actor {
 
 		currentFrame = animation.getFrameReference(0).getBitmap();
 		this.kill = kill;
-		this.walk1 = walk1;
 
 		this.setDirection(3);
 	}

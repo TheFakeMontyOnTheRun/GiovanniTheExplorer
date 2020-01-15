@@ -21,7 +21,7 @@ public class Level extends TileArea {
 	Miner miner;
 	boolean mayExit;
 	MonsterMother[] motherMonster;
-	ArrayList<Actor> recycler = new ArrayList<Actor>();
+	private final ArrayList<Actor> recycler = new ArrayList<>();
 
 	public Level(int i, int j, Resources resources, int[] tilePaletteIndexes, int chancesTile, int[] wallTiles, int chancesWall) {
 		super(i, j, br.GlobalGameJam.Constants.BASETERRAINRESID, resources,
@@ -30,13 +30,13 @@ public class Level extends TileArea {
 
 	public void draw(Canvas canvas, Paint paint) {
 
-		super.move(camera.x - (ItCameView.viewport.right / 2), camera.y
-				- (ItCameView.viewport.bottom / 2));
+		super.move(camera.x - (ItCameView.viewport.right / 2.0f), camera.y
+				- (ItCameView.viewport.bottom / 2.0f));
 
 		super.draw(canvas, paint);
 
-		super.move(-camera.x + (ItCameView.viewport.right / 2), -camera.y
-				+ (ItCameView.viewport.bottom / 2));
+		super.move(-camera.x + (ItCameView.viewport.right / 2.0f), -camera.y
+				+ (ItCameView.viewport.bottom / 2.0f));
 
 	}
 

@@ -17,15 +17,6 @@ class MainMenuActivity : Activity(), View.OnClickListener {
         (findViewById<View>(R.id.btnStartGame) as Button).requestFocus()
     }
 
-    fun mayEnableSound(): Boolean {
-        val am = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        return when (am.ringerMode) {
-            AudioManager.RINGER_MODE_SILENT, AudioManager.RINGER_MODE_VIBRATE -> false
-            AudioManager.RINGER_MODE_NORMAL -> true
-            else -> false
-        }
-    }
-
     override fun onClick(v: View) {
         var intent: Intent? = null
         when (v.id) {
@@ -48,8 +39,6 @@ class MainMenuActivity : Activity(), View.OnClickListener {
                 intent.putExtras(bundle)
                 this.startActivity(intent)
             }
-        }
-        if (resultCode == RESULT_CANCELED) { //Write your code on no result return
         }
     }
 

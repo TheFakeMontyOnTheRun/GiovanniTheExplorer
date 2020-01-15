@@ -1,6 +1,3 @@
-/**
- *
- */
 package br.GlobalGameJam;
 
 import android.graphics.Canvas;
@@ -13,15 +10,15 @@ import android.graphics.Paint;
  */
 public class MiniMapWidget {
 
-	private Level level;
+	private final Level level;
 
 	public MiniMapWidget(Level level) {
 		this.level = level;
 	}
 
-	public void draw(Canvas canvas, Paint paint) {
+	public void draw(Canvas canvas) {
 
-		paint = new Paint();
+		Paint paint = new Paint();
 
 		paint.setColor(Color.GREEN);
 

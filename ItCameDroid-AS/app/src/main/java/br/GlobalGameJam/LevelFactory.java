@@ -70,8 +70,6 @@ public class LevelFactory {
 		return level;
 	}
 
-	;
-
 	private static void placeExit(int i, int j, Level level, int radius) {
 
 		for (int a = i - radius; a < i + radius; ++a) {

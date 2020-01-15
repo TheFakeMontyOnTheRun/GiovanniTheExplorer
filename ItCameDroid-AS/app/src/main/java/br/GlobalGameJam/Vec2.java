@@ -12,7 +12,7 @@ public class Vec2 {
 		y = aY;
 	}
 
-	public Vec2(Vec2 position) {
+	private Vec2(Vec2 position) {
 		x = position.x;
 		y = position.y;
 	}
@@ -22,7 +22,7 @@ public class Vec2 {
 		y = 0;
 	}
 
-	public Vec2(float x, float y) {
+	private Vec2(float x, float y) {
 		set(x, y);
 	}
 

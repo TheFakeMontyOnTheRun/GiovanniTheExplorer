@@ -1,7 +1,7 @@
 package br.GlobalGameJam;
 
 
-public class CreateMonsterTimer implements Runnable {
+class CreateMonsterTimer implements Runnable {
 	br.DroidLib.Timer timer;
 
 	@Override

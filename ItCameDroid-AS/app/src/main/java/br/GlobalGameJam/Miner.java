@@ -11,8 +11,8 @@ import br.DroidLib.Bitmap;
 
 public class Miner extends Actor {
 
-	Animation[] animation;
-	MediaPlayer steps = null;
+	private final Animation[] animation;
+	private MediaPlayer steps = null;
 
 	public Miner(Resources resources, Context context) {
 		super();
@@ -69,7 +69,7 @@ public class Miner extends Actor {
 				animation[super.getDirection()].setCurrentFrame(0);
 				currentFrame = animation[super.getDirection()]
 						.getCurrentFrameReference().getBitmap();
-			} catch (Exception e) {
+			} catch (Exception ignored) {
 
 			}
 

@@ -10,16 +10,15 @@ import android.widget.ImageView
 import android.widget.TextView
 
 class ShowGameOutcomeActivity : Activity(), View.OnClickListener {
-    var btnBack: Button? = null
+    private var btnBack: Button? = null
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_game_outcome)
         val outcome1 = "Parabéns, você fugiu da caverna!"
         val outcome2 = "Que pena! Você foi derrotado. Fim de jogo!"
-        val tvOutcome: TextView
         val victory = (intent.extras!!.getString("result")
                 == "victory")
-        tvOutcome = findViewById<View>(R.id.tvOutcome) as TextView
+        val tvOutcome: TextView = findViewById<View>(R.id.tvOutcome) as TextView
         tvOutcome.text = if (victory) outcome1 else outcome2
         tvOutcome.setTextColor(if (victory) Color.BLACK else Color.WHITE)
         this.title = if (victory) outcome1 else outcome2
@@ -30,7 +29,7 @@ class ShowGameOutcomeActivity : Activity(), View.OnClickListener {
         btnBack!!.setOnClickListener(this)
         val iv = findViewById<View>(R.id.ivOutcome) as ImageView
         iv.setImageResource(if (victory) R.drawable.end_victory else R.drawable.end_gameover)
-        iv.setImageAlpha(if (victory) 255 else 16)
+        iv.imageAlpha = if (victory) 255 else 16
     }
 
     override fun onClick(v: View) {

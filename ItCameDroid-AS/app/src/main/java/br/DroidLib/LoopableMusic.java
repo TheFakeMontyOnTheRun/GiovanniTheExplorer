@@ -1,5 +1,5 @@
 package br.DroidLib;
 
-public class LoopableMusic {
+class LoopableMusic {
 
 }

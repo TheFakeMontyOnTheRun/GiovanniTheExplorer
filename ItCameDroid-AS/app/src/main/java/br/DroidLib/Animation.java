@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Animation implements Runnable {
 	public boolean play;
-	long interval;
+	private final long interval;
 	private int framesPerSecond;
 	private ArrayList<Frame> frames;
 	private int currentFrame;
@@ -12,7 +12,7 @@ public class Animation implements Runnable {
 	private Thread controller;
 
 	public Animation() {
-		frames = new ArrayList<Frame>();
+		frames = new ArrayList<>();
 		currentFrame = 0;
 		interval = 50;
 		loop = true;

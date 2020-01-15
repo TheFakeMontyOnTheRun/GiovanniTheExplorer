@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.KeyEvent
 
 class ItCameFromTheCaveActivity : Activity() {
-    var view: ItCameView? = null
+    private var view: ItCameView? = null
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         view = ItCameView(this)

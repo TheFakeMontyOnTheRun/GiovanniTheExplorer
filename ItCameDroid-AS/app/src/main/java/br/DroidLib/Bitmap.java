@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 public class Bitmap {
-	android.graphics.Bitmap sprite;
+	private android.graphics.Bitmap sprite;
 	private float x;
 	private float y;
 
@@ -25,7 +25,7 @@ public class Bitmap {
 		sprite = BitmapFactory.decodeResource(resources, baseTypeId);
 	}
 
-	public Bitmap(android.graphics.Bitmap androidBitmap) {
+	Bitmap(android.graphics.Bitmap androidBitmap) {
 		// TODO Auto-generated constructor stub
 		sprite = androidBitmap;
 	}
@@ -34,7 +34,7 @@ public class Bitmap {
 		return sprite;
 	}
 
-	public void setAndroidBitmap(android.graphics.Bitmap tile) {
+	void setAndroidBitmap(android.graphics.Bitmap tile) {
 		// TODO Auto-generated method stub
 		sprite = tile;
 	}
