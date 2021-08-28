@@ -59,6 +59,30 @@ long animationTime = 0;
 bool hasCache = false;
 odb::LightMap lightMapCache;
 
+std::string readToString(FILE *fileDescriptor) {
+
+	fseek(fileDescriptor, 0, SEEK_END);
+	long fileSize = ftell(fileDescriptor);
+	rewind(fileDescriptor);
+	std::string total;
+	total.assign(fileSize, 0);
+
+	for (auto pos = 0; pos < fileSize; ++pos) {
+		char buffer[1];
+		size_t read = fread((void *) &buffer[0], 1, 1, fileDescriptor);
+		if (read) {
+			for (unsigned int c = 0; c < read; ++c) {
+				total[pos] = buffer[c];
+			}
+		}
+		if (read < 1) {
+			return "total not met";
+		}
+	}
+
+	return total;
+}
+
 void loadShaders(JNIEnv *env, jobject &obj) {
     AAssetManager *asset_manager = AAssetManager_fromJava(env, obj);
     FILE *fd;

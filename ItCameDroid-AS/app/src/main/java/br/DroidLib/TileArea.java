@@ -6,9 +6,6 @@ import android.graphics.Paint;
 
 import java.util.ArrayList;
 
-import br.odb.giovanni.GlobalGameJam.Actor;
-import br.odb.giovanni.GlobalGameJam.Vec2;
-
 public class TileArea {
 	
 	public Tile[][] map;
