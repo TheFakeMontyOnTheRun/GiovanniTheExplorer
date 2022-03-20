@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import br.odb.giovanni.R
 
-
 class HowToPlayActivity : Activity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

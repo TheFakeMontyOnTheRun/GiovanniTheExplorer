@@ -4,38 +4,26 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 
 public class Tile extends br.odb.giovanni.engine.Bitmap {
-	private int tipo;
+    private int type;
 
-	public Tile(Resources resources, int resId) {
-		super(resources, resId);
-		// TODO Auto-generated constructor stub
-		tipo = resId;
-	}
+    public Tile(Resources resources, int resId) {
+        super(resources, resId);
 
-	public Tile(int baseTypeId, Bitmap androidBitmap) {
-		// TODO Auto-generated constructor stub
-		super(androidBitmap);
-		tipo = baseTypeId;
-	}
+        type = resId;
+    }
 
-	/**
-	 * @return the tipo
-	 */
-	public int getTipo() {
-		return tipo;
-	}
+    public Tile(int baseTypeId, Bitmap androidBitmap) {
+        super(androidBitmap);
 
-	/**
-	 * @param tipo the tipo to set
-	 */
-	public void setTipo(int tipo) {
-		this.tipo = tipo;
-	}
+        type = baseTypeId;
+    }
 
-	public void setTile(int type, android.graphics.Bitmap tile) {
-		// TODO Auto-generated method stub
-		super.setAndroidBitmap(tile);
-		tipo = type;
-	}
+    public int getType() {
+        return type;
+    }
 
+    public void setTile(int type, android.graphics.Bitmap tile) {
+        super.setAndroidBitmap(tile);
+        this.type = type;
+    }
 }

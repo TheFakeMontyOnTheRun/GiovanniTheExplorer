@@ -3,134 +3,75 @@ package br.odb.giovanni.engine;
 import java.util.ArrayList;
 
 public class Animation implements Runnable {
-	public boolean play;
-	private final long interval;
-	private int framesPerSecond;
-	private ArrayList<Bitmap> frames;
-	private int currentFrame;
-	private boolean loop;
-	private Thread controller;
+    public boolean play;
+    private final long interval;
+    private ArrayList<Bitmap> frames;
+    private int currentFrame;
+    private boolean loop;
 
-	public Animation() {
-		frames = new ArrayList<>();
-		currentFrame = 0;
-		interval = 50;
-		loop = true;
-		play = true;
-		framesPerSecond = 24;
-		controller = null;
-	}
+    public Animation() {
+        frames = new ArrayList<>();
+        currentFrame = 0;
+        interval = 50;
+        loop = true;
+        play = true;
+    }
 
-	@Override
-	public void run() {
+    @Override
+    public void run() {
 
-		while (play) {
-			// if (currentFrame==frames.size()-1)
-			// parar=true;
-			tick(interval);
-		}
-	}
+        while (play) {
+            tick(interval);
+        }
+    }
 
-	/**
-	 * @return the framesPerSeconds
-	 */
-	public int getFramesPerSecond() {
-		return framesPerSecond;
-	}
+    public void setCurrentFrame(int currentFrame) {
+        this.currentFrame = currentFrame;
+    }
 
-	/**
-	 * @param framesPerSeconds the framesPerSeconds to set
-	 */
-	public void setFramesPerSecond(int framesPerSeconds) {
-		this.framesPerSecond = framesPerSeconds;
-	}
+    public void setLoop(boolean loop) {
+        this.loop = loop;
+    }
 
-	/**
-	 * @return the frames
-	 */
-	public ArrayList<Bitmap> getFrames() {
-		return frames;
-	}
+    public void addFrame(br.odb.giovanni.engine.Bitmap bitmap) {
+        frames.add((bitmap));
 
-	/**
-	 * @param frames the frames to set
-	 */
-	public void setFrames(ArrayList<Bitmap> frames) {
-		this.frames = frames;
-	}
+    }
 
-	/**
-	 * @return the currentFrame
-	 */
-	public int getCurrentFrame() {
-		return currentFrame;
-	}
+    public Bitmap getCurrentFrameReference() {
+        return getFrameReference(currentFrame);
+    }
 
-	/**
-	 * @param currentFrame the currentFrame to set
-	 */
-	public void setCurrentFrame(int currentFrame) {
-		this.currentFrame = currentFrame;
-	}
+    public Bitmap getFrameReference(int i) {
+        return frames.get(i);
+    }
 
-	/**
-	 * @return the loop
-	 */
-	public boolean isLoop() {
-		return loop;
-	}
+    public void tick(long timeInMS) {
 
-	/**
-	 * @param loop the loop to set
-	 */
-	public void setLoop(boolean loop) {
-		this.loop = loop;
-	}
+        if (play) {
+            currentFrame++;
+        }
 
-	public void addFrame(br.odb.giovanni.engine.Bitmap bitmap) {
-		frames.add((bitmap));
+        if (currentFrame == frames.size()) {
 
-	}
+            currentFrame = 0;
 
-	public Bitmap getCurrentFrameReference() {
-		return getFrameReference(currentFrame);
-	}
+            if (!loop) {
 
-	public void start() {
-		controller = new Thread(this, "animation ticker");
-		controller.start();
-	}
+                play = false;
+            }
+        }
+    }
 
-	public Bitmap getFrameReference(int i) {
-		return frames.get(i);
-	}
+    public void prepareForGC() {
+        play = false;
+        Thread.yield();
 
-	public void tick(long timeInMS) {
+        for (Bitmap f : frames) {
+            f.prepareForGC();
+        }
 
-		if (play) {
-			currentFrame++;
-		}
-
-		if (currentFrame == frames.size()) {
-
-			currentFrame = 0;
-
-			if (!loop) {
-
-				play = false;
-			}
-		}
-	}
-
-	public void prepareForGC() {
-		play = false;
-		Thread.yield();
-
-		for (Bitmap f : frames) {
-			f.prepareForGC();
-		}
-
-		frames.clear();
-		frames = null;
-	}
+        frames.clear();
+        frames = null;
+    }
 }

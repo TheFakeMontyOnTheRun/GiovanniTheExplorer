@@ -23,26 +23,10 @@ class ItCameFromTheCaveActivity : Activity() {
         super.onPause()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
         return view!!.onKeyUp(keyCode, event)
     }
 
-    //    @Override
-//    protected void onPause() {
-//
-//    	view.playing = false;
-//    	super.onPause();
-//    }
-//
-//    @Override
-//    protected void onResume() {
-//    	view.playing = true;
-//    	super.onResume();
-//    }
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         view!!.playing = hasFocus
         super.onWindowFocusChanged(hasFocus)

@@ -11,248 +11,243 @@ import br.odb.giovanni.game.Vec2;
 
 public class TileArea {
 
-	private final Tile[][] map;
-	protected ArrayList<Actor> actors;
-	private final Tile[] tilePalette;
-	private final Tile[] wallPalette;
-	private final int[] tilePaletteIndexes;
-	private final int dimX;
-	private final int dimY;
-	private LevelSnapshot snapshot;
+    private final Tile[][] map;
+    protected ArrayList<Actor> actors;
+    private final Tile[] tilePalette;
+    private final Tile[] wallPalette;
+    private final int[] tilePaletteIndexes;
+    private final int dimX;
+    private final int dimY;
 
-	protected TileArea(int i, int j, int baseTypeId, Resources resources,
-					   int[] tilePaletteIndex, int chancesTile, int[] wallTiles, int chancesWall) {
-		setActors(new ArrayList<Actor>());
-		tilePaletteIndexes = tilePaletteIndex;
-		int lastx = 0;
-		int lasty = 0;
-		Tile tile;
-		map = new Tile[i][j];
+    protected TileArea(int i,
+                       int j,
+                       int baseTypeId,
+                       Resources resources,
+                       int[] tilePaletteIndex,
+                       int chancesTile,
+                       int[] wallTiles,
+                       int chancesWall) {
 
-		dimX = i;
-		dimY = j;
-		int maiorY = 0;
-		tilePalette = new Tile[2];
-		wallPalette = new Tile[2];
+        setActors(new ArrayList<Actor>());
+        tilePaletteIndexes = tilePaletteIndex;
+        int lastx = 0;
+        int lasty = 0;
+        Tile tile;
+        map = new Tile[i][j];
 
-		for (int c = 0; c < tilePaletteIndexes.length; c++)
-			tilePalette[c] = new Tile(resources, tilePaletteIndexes[c]);
+        dimX = i;
+        dimY = j;
+        int biggestY = 0;
+        tilePalette = new Tile[2];
+        wallPalette = new Tile[2];
 
-		for (int c = 0; c < wallTiles.length; c++)
-			wallPalette[c] = new Tile(resources, wallTiles[c]);
+        for (int c = 0; c < tilePaletteIndexes.length; c++)
+            tilePalette[c] = new Tile(resources, tilePaletteIndexes[c]);
 
+        for (int c = 0; c < wallTiles.length; c++)
+            wallPalette[c] = new Tile(resources, wallTiles[c]);
 
-		for (int y = 0; y < j; y++) {
 
-			for (int x = 0; x < i; x++) {
+        for (int y = 0; y < j; y++) {
 
-				tile = new Tile(baseTypeId,
-						tilePalette[Math.round(Math.random() * 45) == 0 ? 0 : 1]
-								.getAndroidBitmap());
+            for (int x = 0; x < i; x++) {
 
-				map[x][y] = tile;
+                tile = new Tile(baseTypeId,
+                        tilePalette[Math.round(Math.random() * 45) == 0 ? 0 : 1]
+                                .getAndroidBitmap());
 
-				tile.setX(lastx);
-				tile.setY(lasty
-						- (tile.getAndroidBitmap().getHeight() - Constants.BASETILEHEIGHT));
+                map[x][y] = tile;
 
-				tile.setY(lasty);
+                tile.setX(lastx);
+                tile.setY(lasty
+                        - (tile.getAndroidBitmap().getHeight() - Constants.BASETILEHEIGHT));
 
-				lastx += tile.getAndroidBitmap().getWidth();
+                tile.setY(lasty);
 
-				if (tile.getAndroidBitmap().getHeight() > maiorY) {
+                lastx += tile.getAndroidBitmap().getWidth();
 
-					maiorY = tile.getAndroidBitmap().getHeight();
-				}
+                if (tile.getAndroidBitmap().getHeight() > biggestY) {
 
-			}
-			lastx = 0;
-			lasty += maiorY;
-		}
+                    biggestY = tile.getAndroidBitmap().getHeight();
+                }
 
-	}
+            }
+            lastx = 0;
+            lasty += biggestY;
+        }
+    }
 
-	public Tile getTile(int x, int y) {
-		return map[x][y];
-	}
+    public int getWidth() {
+        return dimX;
+    }
 
-	public void setTile(int x, int y, Tile tile) {
-		map[x][y] = tile;
-	}
+    public int getHeight() {
+        return dimY;
+    }
 
-	public int getWidth() {
-		return dimX;
-	}
+    public Tile getTileAt(int x, int y) {
+        return map[x][y];
+    }
 
-	public int getHeight() {
-		return dimY;
-	}
+    public void draw(Canvas canvas, Paint paint) {
 
-	public Tile getTileAt(int x, int y) {
-		return map[x][y];
-	}
+        Actor[][] actorMap = makeSnapshot();
 
-	public void draw(Canvas canvas, Paint paint) {
+        for (int x = 0; x < dimX; x++) {
+            for (int y = 0; y < dimY; y++) {
 
-		Actor[][] actorMap = makeSnapshot();
+                map[x][y].draw(canvas, paint);
 
-		for (int x = 0; x < dimX; x++) {
+                if (actorMap[x][y] != null) {
+                    actorMap[x][y].draw(canvas, paint);
+                }
+            }
+        }
+    }
 
-			for (int y = 0; y < dimY; y++) {
+    private Actor[][] makeSnapshot() {
 
-				map[x][y].draw(canvas, paint);
+        Actor[][] toReturn = new Actor[getWidth()][];
 
-				if (actorMap[x][y] != null) {
+        Actor actor;
 
-					actorMap[x][y].draw(canvas, paint);
-				}
-			}
-		}
-	}
+        for (int x = 0; x < toReturn.length; ++x) {
 
-	private Actor[][] makeSnapshot() {
+            toReturn[x] = new Actor[getHeight()];
 
-		Actor[][] toReturn = new Actor[getWidth()][];
+            for (int y = 0; y < toReturn[x].length; ++y) {
+                toReturn[x][y] = null;
+            }
+        }
 
-		Actor actor;
+        for (int c = 0; c < getActors().size(); c++) {
 
-		for (int x = 0; x < toReturn.length; ++x) {
+            actor = getActors().get(c);
 
-			toReturn[x] = new Actor[getHeight()];
+            if (actor.killed) {
+                continue;
+            }
 
-			for (int y = 0; y < toReturn[x].length; ++y) {
-				toReturn[x][y] = null;
-			}
-		}
+            int currentX = (int) (actor.getPosition().x / Constants.BASETILEWIDTH);
+            int currentY = (int) (actor.getPosition().y / Constants.BASETILEHEIGHT);
+            toReturn[currentX][currentY] = actor;
+        }
 
-		for (int c = 0; c < getActors().size(); c++) {
+        return toReturn;
+    }
 
-			actor = getActors().get(c);
+    public void setTileType(int i, int j, int type) {
 
-			if (actor.killed) {
-				continue;
-			}
+        if (i < 0 || i >= map.length) {
+            return;
+        }
 
-			int currentX = (int) (actor.getPosition().x / Constants.BASETILEWIDTH);
-			int currentY = (int) (actor.getPosition().y / Constants.BASETILEHEIGHT);
-			toReturn[currentX][currentY] = actor;
-		}
+        if (j < 0 || j >= map[i].length) {
+            return;
+        }
 
-		return toReturn;
-	}
+        Tile tile = map[i][j];
+        tile.setX(tile.getX()
+                + (tile.getAndroidBitmap().getWidth() - Constants.BASETILEWIDTH));
+        tile.setY(tile.getY()
+                + (tile.getAndroidBitmap().getHeight() - Constants.BASETILEHEIGHT));
 
-	public void setTileType(int i, int j, int type) {
 
-		if (i < 0 || i >= map.length) {
-			return;
-		}
+        if (type != 0) {
 
-		if (j < 0 || j >= map[i].length) {
-			return;
-		}
+            tile.setTile(type, wallPalette[Math.round(Math.random() * 6) != 0 ? 0 : 1].getAndroidBitmap());
+        } else {
+            tile.setTile(type, tilePalette[(Math.random() * 3) == 0 ? 0 : 1].getAndroidBitmap());
 
-		Tile tile = map[i][j];
-		tile.setX(tile.getX()
-				+ (tile.getAndroidBitmap().getWidth() - Constants.BASETILEWIDTH));
-		tile.setY(tile.getY()
-				+ (tile.getAndroidBitmap().getHeight() - Constants.BASETILEHEIGHT));
+        }
 
+        tile.setX(tile.getX()
+                - (tile.getAndroidBitmap().getWidth() - Constants.BASETILEWIDTH));
+        tile.setY(tile.getY()
+                - (tile.getAndroidBitmap().getHeight() - Constants.BASETILEHEIGHT));
+    }
 
-		if (type != 0) {
+    public void move(float x, float y) {
+        move((int) x, (int) y);
+    }
 
-			tile.setTile(type, wallPalette[Math.round(Math.random() * 6) != 0 ? 0 : 1].getAndroidBitmap());
-		} else {
-			tile.setTile(type, tilePalette[(Math.random() * 3) == 0 ? 0 : 1].getAndroidBitmap());
+    private void move(int x, int y) {
 
-		}
+        for (int i = 0; i < dimX; i++)
+            for (int j = 0; j < dimY; j++) {
 
-		tile.setX(tile.getX()
-				- (tile.getAndroidBitmap().getWidth() - Constants.BASETILEWIDTH));
-		tile.setY(tile.getY()
-				- (tile.getAndroidBitmap().getHeight() - Constants.BASETILEHEIGHT));
-	}
+                Tile tile = map[i][j];
+                tile.setX(tile.getX() - x);
+                tile.setY(tile.getY() - y);
+            }
+    }
 
-	public void move(float x, float y) {
-		move((int) x, (int) y);
-	}
+    public void addActor(float i, float j, Actor actor) {
 
-	private void move(int x, int y) {
+        if (i < 0 || i >= map.length) {
+            return;
+        }
 
-		for (int i = 0; i < dimX; i++)
-			for (int j = 0; j < dimY; j++) {
+        if (j < 0 || j >= map[(int) i].length) {
+            return;
+        }
 
-				Tile tile = map[i][j];
-				tile.setX(tile.getX() - x);
-				tile.setY(tile.getY() - y);
-			}
-	}
+        getActors().add(actor);
+        int adjustY = -(Constants.BASETILEHEIGHT - actor.getBounds().height()) / 2;
+        int adjustX = (Constants.BASETILEWIDTH - actor.getBounds().width()) / 2;
+        Vec2 vec2 = new Vec2(i * Constants.BASETILEWIDTH + adjustX, j
+                * Constants.BASETILEHEIGHT + adjustY);
+        actor.setPosition(vec2);
+    }
 
-	public void addActor(float i, float j, Actor actor) {
+    public void tick(long timeInMS) {
 
-		if (i < 0 || i >= map.length) {
-			return;
-		}
 
-		if (j < 0 || j >= map[(int) i].length) {
-			return;
-		}
+        for (Actor a : getActors()) {
 
-		getActors().add(actor);
-		int adjustY = -(Constants.BASETILEHEIGHT - actor.getBounds().height()) / 2;
-		int adjustX = (Constants.BASETILEWIDTH - actor.getBounds().width()) / 2;
-		Vec2 vec2 = new Vec2(i * Constants.BASETILEWIDTH + adjustX, j
-				* Constants.BASETILEHEIGHT + adjustY);
-		actor.setPosition(vec2);
-	}
+            if (a.killed) {
+                continue;
+            }
 
-	public void tick(long timeInMS) {
+            assert (a.getPosition() != null);
 
+            a.tick(timeInMS);
 
-		for (Actor a : getActors()) {
+            for (Actor b : getActors()) {
 
-			if (a.killed) {
-				continue;
-			}
+                if (b.killed) {
+                    continue;
+                }
 
-			assert (a.getPosition() != null);
+                if (a == b) {
+                    continue;
+                }
 
-			a.tick(timeInMS);
+                assert (b.getPosition() != null);
 
-			for (Actor b : getActors()) {
+                if (a.getPosition().isCloseEnoughToConsiderEqualTo(
+                        b.getPosition())) {
+                    a.touched(b);
+                    b.touched(a);
+                }
+            }
+        }
+    }
 
-				if (b.killed) {
-					continue;
-				}
+    public ArrayList<Actor> getActors() {
+        return actors;
+    }
 
-				if (a == b) {
-					continue;
-				}
+    private void setActors(ArrayList<Actor> actors) {
+        this.actors = actors;
+    }
 
-				assert (b.getPosition() != null);
+    protected boolean outsideMap(Actor actor) {
+        Vec2 pos = actor.getPosition();
 
-				if (a.getPosition().isCloseEnoughToConsiderEqualTo(
-						b.getPosition())) {
-					a.touched(b);
-					b.touched(a);
-				}
-			}
-		}
-	}
+        int x = (int) (pos.y / Constants.BASETILEHEIGHT);
+        int y = (int) (pos.x / Constants.BASETILEWIDTH);
 
-	public ArrayList<Actor> getActors() {
-		return actors;
-	}
-
-	private void setActors(ArrayList<Actor> actors) {
-		this.actors = actors;
-	}
-
-	protected boolean outsideMap(Actor actor) {
-		Vec2 pos = actor.getPosition();
-
-		int x = (int) (pos.y / Constants.BASETILEHEIGHT);
-		int y = (int) (pos.x / Constants.BASETILEWIDTH);
-
-		return x <= 0 || y <= 0 || (y >= map.length - 1) || (x >= map[x].length - 1);
-	}
+        return x <= 0 || y <= 0 || (y >= map.length - 1) || (x >= map[x].length - 1);
+    }
 }

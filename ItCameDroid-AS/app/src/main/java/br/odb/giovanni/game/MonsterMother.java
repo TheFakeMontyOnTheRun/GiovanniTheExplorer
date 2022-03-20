@@ -12,64 +12,56 @@ import br.odb.giovanni.menus.ItCameView;
 
 public class MonsterMother extends Actor {
 
-	private long timeEllapsed;
-	private final Resources resources;
-	private MediaPlayer spawnSound = null;
-	private MediaPlayer kill = null;
-	private MediaPlayer walk1 = null;
+    private long timeEllapsed;
+    private final Resources resources;
+    private MediaPlayer spawnSound = null;
+    private MediaPlayer kill = null;
+    private MediaPlayer walk1 = null;
 
-	public MonsterMother(Resources resources, Context context) {
-		super();
+    public MonsterMother(Resources resources, Context context) {
+        super();
 
-		this.resources = resources;
-		animation = new Animation();
-		animation.addFrame(new Bitmap(resources, R.drawable.vulcan_01));
-		animation.addFrame(new Bitmap(resources, R.drawable.vulcan_02));
-		animation.addFrame(new Bitmap(resources, R.drawable.vulcan_03));
-//		animation.addFrame(new Bitmap(resources, R.drawable.mom1));
-//		animation.addFrame(new Bitmap(resources, R.drawable.mom2));
-//		animation.addFrame(new Bitmap(resources, R.drawable.mom3));
-//		animation.addFrame(new Bitmap(resources, R.drawable.mom4));
-		currentFrame = animation.getFrameReference(0);
+        this.resources = resources;
+        animation = new Animation();
+        animation.addFrame(new Bitmap(resources, R.drawable.vulcan_01));
+        animation.addFrame(new Bitmap(resources, R.drawable.vulcan_02));
+        animation.addFrame(new Bitmap(resources, R.drawable.vulcan_03));
+        currentFrame = animation.getFrameReference(0);
 
-		if (ItCameView.playSounds) {
+        if (ItCameView.playSounds) {
 
-			spawnSound = MediaPlayer.create(context, R.raw.spawn);
-			kill = MediaPlayer.create(context, R.raw.monsterkill);
-			walk1 = MediaPlayer.create(context, R.raw.walk1);
-		}
-	}
+            spawnSound = MediaPlayer.create(context, R.raw.spawn);
+            kill = MediaPlayer.create(context, R.raw.monsterkill);
+            walk1 = MediaPlayer.create(context, R.raw.walk1);
+        }
+    }
 
-	public Monster generate(long timeEllapsed) {
+    public Monster generate(long timeEllapsed) {
 
-		this.timeEllapsed += timeEllapsed;
+        this.timeEllapsed += timeEllapsed;
 
-		Monster generated = null;
+        Monster generated = null;
 
-		if (this.timeEllapsed > 400) {
+        if (this.timeEllapsed > 400) {
 
-			this.timeEllapsed -= 400;
+            this.timeEllapsed -= 400;
 
-			generated = new Monster(resources, walk1, null, kill);
+            generated = new Monster(resources, walk1, null, kill);
 
-			if (spawnSound != null && !spawnSound.isPlaying()) {
+            if (spawnSound != null && !spawnSound.isPlaying()) {
 
-				spawnSound.start();
-			}
-			generated.setPosition(getPosition());
-		}
-		return generated;
-	}
+                spawnSound.start();
+            }
+            generated.setPosition(getPosition());
+        }
+        return generated;
+    }
 
-	@Override
-	public void touched(Actor actor) {
-		// TODO Auto-generated method stub
+    @Override
+    public void touched(Actor actor) {
+    }
 
-	}
-
-	@Override
-	public void didMove() {
-		// TODO Auto-generated method stub
-
-	}
+    @Override
+    public void didMove() {
+    }
 }

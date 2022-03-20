@@ -6,82 +6,47 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 public class Bitmap {
-	private android.graphics.Bitmap sprite;
-	private float x;
-	private float y;
+    private android.graphics.Bitmap sprite;
+    private float x;
+    private float y;
 
-	public Bitmap(Resources resources, int baseTypeId) {
-		/*
-		Resources r = context.getResources();
-		Drawable sprite= r.getDrawable(resId);
-		int width = sprite.getIntrinsicWidth();
-		int height = sprite.getIntrinsicHeight();
-		bitmap = android.graphics.Bitmap.createBitmap(width, height, android.graphics.Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(bitmap);
-		sprite.setBounds(0, 0, width, height);
-		sprite.draw(canvas);
-	   */
+    public Bitmap(Resources resources, int baseTypeId) {
+        sprite = BitmapFactory.decodeResource(resources, baseTypeId);
+    }
 
-		sprite = BitmapFactory.decodeResource(resources, baseTypeId);
-	}
+    Bitmap(android.graphics.Bitmap androidBitmap) {
+        sprite = androidBitmap;
+    }
 
-	Bitmap(android.graphics.Bitmap androidBitmap) {
-		// TODO Auto-generated constructor stub
-		sprite = androidBitmap;
-	}
+    public android.graphics.Bitmap getAndroidBitmap() {
+        return sprite;
+    }
 
-	public android.graphics.Bitmap getAndroidBitmap() {
-		return sprite;
-	}
+    void setAndroidBitmap(android.graphics.Bitmap tile) {
+        sprite = tile;
+    }
 
-	void setAndroidBitmap(android.graphics.Bitmap tile) {
-		// TODO Auto-generated method stub
-		sprite = tile;
-	}
+    public float getX() {
+        return x;
+    }
 
-	/**
-	 * @return the x
-	 */
-	public float getX() {
-		//	return sprite.getBounds().left;
-		return x;
-	}
+    public void setX(float x) {
+        this.x = x;
+    }
 
-	/**
-	 * @param x the x to set
-	 */
-	public void setX(float x) {
-//		Rect rect=sprite.getBounds();
-//		rect.left=(int) x;
-//		sprite.setBounds(rect);
-		this.x = x;
-	}
+    public float getY() {
+        return this.y;
+    }
 
-	/**
-	 * @return the y
-	 */
-	public float getY() {
-//		return sprite.getBounds().top;
-		return this.y;
-	}
+    public void setY(float y) {
+        this.y = y;
+    }
 
-	/**
-	 * @param y the y to set
-	 */
-	public void setY(float y) {
-//		Rect rect=sprite.getBounds();
-//		rect.top=(int) y;
-//		sprite.setBounds(rect);
-		this.y = y;
-	}
+    public void draw(Canvas canvas, Paint paint) {
+        canvas.drawBitmap(sprite, x, y, paint);
+    }
 
-	public void draw(Canvas canvas, Paint paint) {
-		// TODO Auto-generated method stub
-
-		canvas.drawBitmap(sprite, x, y, paint);
-	}
-
-	public void prepareForGC() {
-		sprite = null;
-	}
+    public void prepareForGC() {
+        sprite = null;
+    }
 }

@@ -17,7 +17,7 @@ class MainMenuActivity : Activity(), View.OnClickListener {
         findViewById<View>(R.id.btnHelp).setOnClickListener(this)
         (findViewById<View>(R.id.btnStartGame) as Button).requestFocus()
         findViewById<Switch>(R.id.swEnableSound).isChecked = (application as GiovanniApplication)
-                .mayEnableSound()
+            .mayEnableSound()
     }
 
     override fun onClick(v: View) {
