@@ -5,18 +5,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.Switch
 import br.odb.giovanni.R
-import kotlinx.android.synthetic.main.activity_main_menu.*
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class MainMenuActivity : Activity(), View.OnClickListener {
+
+    private lateinit var swEnableSound : SwitchMaterial
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
         findViewById<View>(R.id.btnStartGame).setOnClickListener(this)
         findViewById<View>(R.id.btnHelp).setOnClickListener(this)
+        swEnableSound = findViewById(R.id.swEnableSound)
         (findViewById<View>(R.id.btnStartGame) as Button).requestFocus()
-        findViewById<Switch>(R.id.swEnableSound).isChecked = (application as GiovanniApplication)
+        swEnableSound.isChecked = (application as GiovanniApplication)
             .mayEnableSound()
     }
 

@@ -9,13 +9,15 @@
 		android:allowBackup="false"
 		android:icon="@drawable/icon"
 		android:name=".menus.GiovanniApplication"
-		android:label="@string/app_name">
+		android:label="@string/app_name"
+		android:fullBackupContent="true"
+		android:dataExtractionRules="@xml/data_extraction_rules">
 		<activity
 			android:name=".menus.ItCameFromTheCaveActivity"
 			android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
-			android:label="@string/app_name"
 			android:screenOrientation="landscape" />
 		<activity
+			android:exported="true"
 			android:name=".menus.MainMenuActivity"
 			android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
 			android:label="Giovanni"
