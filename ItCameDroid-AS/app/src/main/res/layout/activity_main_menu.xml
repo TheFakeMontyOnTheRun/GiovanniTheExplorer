@@ -9,24 +9,13 @@
 	android:paddingBottom="@dimen/activity_vertical_margin"
 	tools:context="br.odb.giovanni.menus.MainMenuActivity">
 
-	<!--
-		 Button
-		android:id="@+id/btnLeaderboard"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignLeft="@+id/btnHelp"
-		android:layout_alignRight="@+id/btnHelp"
-		android:layout_below="@+id/btnHelp"
-		android:enabled="false"
-		android:text="Placares" /
-	-->
-
 	<ImageView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentBottom="true"
-		android:src="@drawable/logo1" />
+		android:src="@drawable/logo1"
+		android:contentDescription="TODO" />
 
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -50,7 +39,7 @@
 			android:layout_marginBottom="22dp"
 			android:text="Como jogar" />
 
-		<Switch
+		<com.google.android.material.switchmaterial.SwitchMaterial
 			android:id="@+id/swEnableSound"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

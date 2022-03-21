@@ -29,7 +29,7 @@ class MainMenuActivity : Activity(), View.OnClickListener {
             R.id.btnStartGame -> {
                 needsReset = true
                 intent = Intent(this, ItCameFromTheCaveActivity::class.java)
-                var bundle = Bundle()
+                val bundle = Bundle()
                 bundle.putBoolean("hasSound", swEnableSound.isChecked)
                 intent.putExtras(bundle)
             }
