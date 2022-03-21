@@ -53,7 +53,6 @@ class MainMenuActivity : Activity(), View.OnClickListener {
     }
 
     companion object {
-        @JvmField
         var needsReset = false
     }
 }

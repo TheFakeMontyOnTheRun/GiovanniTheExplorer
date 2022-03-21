@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Paint
 import br.odb.giovanni.engine.TileArea
+import br.odb.giovanni.engine.Vec2
 import br.odb.giovanni.menus.ItCameView
 
 class Level(
@@ -43,10 +44,10 @@ class Level(
     }
 
     fun mayMoveTo(x: Int, y: Int): Boolean {
-        return if (x < 0 || y < 0 || x >= Constants.SIZEX || y >= Constants.SIZEY) false else super.getTileAt(
+        return if (x < 0 || y < 0 || x >= Constants.SIZE_X || y >= Constants.SIZE_Y) false else !super.getTileAt(
             x,
             y
-        )!!.type != Constants.WALLRESID
+        )!!.blocker
     }
 
     override fun tick(timeInMS: Long) {
@@ -66,8 +67,8 @@ class Level(
         for (mm in motherMonster) {
             val generated = mm!!.generate(timeInMS / 10)
             if (generated != null && alive < LIMIT_MONSTERS_ALIVE) {
-                val x = mm.position!!.x / br.odb.giovanni.engine.Constants.BASETILEWIDTH
-                val y = mm.position!!.y / br.odb.giovanni.engine.Constants.BASETILEHEIGHT
+                val x = mm.position.x / br.odb.giovanni.engine.Constants.BASE_TILE_WIDTH
+                val y = mm.position.y / br.odb.giovanni.engine.Constants.BASE_TILE_HEIGHT
                 addActor(x, y, generated)
                 generated.actorTarget = miner
             }

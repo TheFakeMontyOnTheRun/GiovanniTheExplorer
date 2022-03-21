@@ -3,6 +3,7 @@ package br.odb.giovanni.menus
 import android.app.Activity
 import android.content.Context
 import android.graphics.*
+import android.os.Build
 import android.util.DisplayMetrics
 import android.view.InputDevice
 import android.view.KeyEvent
@@ -16,8 +17,9 @@ import br.odb.giovanni.game.Actor
 import br.odb.giovanni.game.Level
 import br.odb.giovanni.game.LevelFactory.createRandomLevel
 import br.odb.giovanni.game.Miner
-import br.odb.giovanni.game.Vec2
+import br.odb.giovanni.engine.Vec2
 import java.util.*
+import kotlin.system.exitProcess
 
 class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runnable,
     VirtualPadClient, OnTouchListener {
@@ -27,7 +29,7 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
     private val vPad: VirtualPad
     private val keyMap: BooleanArray
     private val paint: Paint?
-    private val camera: Vec2
+    private val camera: Vec2 = Vec2()
     private val actor: Miner
     override val bitmapOverlay: Bitmap
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
@@ -69,7 +71,7 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
             keyMap[KB_RIGHT] = true
             handled = true
         }
-        if (keyCode == KeyEvent.KEYCODE_BACK) System.exit(0)
+        if (keyCode == KeyEvent.KEYCODE_BACK) exitProcess(0)
         return handled
     }
 
@@ -115,13 +117,16 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
                 level!!.setCurrentCamera(actor.position)
                 level!!.draw(canvas, paint)
             }
-            Objects.requireNonNull(paint)!!.setARGB(255, 0, 0, 0)
+
             if (drawOnScreenController) {
                 vPad.draw(canvas)
             }
+
             drawMap(canvas)
+
             paint!!.color = Color.YELLOW
             paint.isFakeBoldText = true
+
             canvas.drawText(
                 "Você derrotou " + level!!.dead
                         + " monstros; Tempo para a detonação: "
@@ -140,7 +145,7 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
         }
     }
 
-    val bounds = Rect()
+    private val bounds = Rect()
     private fun drawMap(canvas: Canvas) {
         var x2: Int
         var y2: Int
@@ -165,8 +170,8 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
             if (a.killed) {
                 continue
             }
-            x2 = (a.position!!.x / Constants.BASETILEWIDTH).toInt()
-            y2 = (a.position!!.y / Constants.BASETILEHEIGHT).toInt()
+            x2 = (a.position.x / Constants.BASE_TILE_WIDTH).toInt()
+            y2 = (a.position.y / Constants.BASE_TILE_HEIGHT).toInt()
             canvas.drawRect(
                 (x2 * 5).toFloat(), (y2 * 5).toFloat(), ((x2 + 1) * 5).toFloat(), (
                         (y2 + 1) * 5).toFloat(), paint
@@ -206,9 +211,9 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
                 return
             }
             if (level!!.dynamite!!.killed
-                && level!!.dynamite!!.position!!
+                && level!!.dynamite!!.position
                     .isCloseEnoughToConsiderEqualTo(
-                        level!!.miner!!.position!!
+                        level!!.miner!!.position
                     )
             ) {
                 val intent = (this.context as ItCameFromTheCaveActivity)
@@ -232,36 +237,41 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
             var handled = false
             var x = 0
             var y = 0
-            val currentX = (actor.position!!.x / Constants.BASETILEWIDTH).toInt()
-            val currentY = (actor.position!!.y / Constants.BASETILEHEIGHT).toInt()
-            if (keymap!![KB_UP]) {
-                y -= (1.25f).toInt()
-                actor.direction = 0
-                handled = true
-            } else if (keymap[KB_DOWN]) {
-                y += (1.25f).toInt()
-                actor.direction = 2
-                handled = true
-            } else if (keymap[KB_LEFT]) {
-                x -= (1.25f).toInt()
-                actor.direction = 3
-                handled = true
-            } else if (keymap[KB_RIGHT]) {
-                actor.direction = 1
-                x += (1.25f).toInt()
-                handled = true
+            val currentX = (actor.position.x / Constants.BASE_TILE_WIDTH).toInt()
+            val currentY = (actor.position.y / Constants.BASE_TILE_HEIGHT).toInt()
+            when {
+                keymap!![KB_UP] -> {
+                    y -= (1.25f).toInt()
+                    actor.direction = 0
+                    handled = true
+                }
+                keymap[KB_DOWN] -> {
+                    y += (1.25f).toInt()
+                    actor.direction = 2
+                    handled = true
+                }
+                keymap[KB_LEFT] -> {
+                    x -= (1.25f).toInt()
+                    actor.direction = 3
+                    handled = true
+                }
+                keymap[KB_RIGHT] -> {
+                    actor.direction = 1
+                    x += (1.25f).toInt()
+                    handled = true
+                }
             }
             if (handled) {
                 if (level!!.mayMoveTo(currentX + x, currentY + y)) {
                     actor.move(
-                        (x * Constants.BASETILEWIDTH).toFloat(), (y
-                                * Constants.BASETILEHEIGHT).toFloat()
+                        (x * Constants.BASE_TILE_WIDTH).toFloat(), (y
+                                * Constants.BASE_TILE_HEIGHT).toFloat()
                     )
                     actor.state = Actor.ActorStates.MOVING
                 }
             } else actor.state = Actor.ActorStates.STILL
-            if (actor.position!!.x < 0) actor.position!!.x = 0f
-            if (actor.position!!.y < 0) actor.position!!.y = 0f
+            if (actor.position.x < 0) actor.position.x = 0f
+            if (actor.position.y < 0) actor.position.y = 0f
         }
     }
 
@@ -276,10 +286,10 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
         private const val KB_DOWN = 2
         private const val KB_LEFT = 3
 
-        @JvmField
+
         var playSounds = true
 
-        @JvmField
+
         val viewport = Rect()
         private var level: Level? = null
     }
@@ -294,11 +304,10 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
         this.requestFocus()
         this.isFocusableInTouchMode = true
         keyMap = vPad.keyMap
-        camera = Vec2(0.0f, 0.0f)
         if (MainMenuActivity.needsReset) {
             level = createRandomLevel(
-                br.odb.giovanni.game.Constants.SIZEX,
-                br.odb.giovanni.game.Constants.SIZEY, resources, context
+                br.odb.giovanni.game.Constants.SIZE_X,
+                br.odb.giovanni.game.Constants.SIZE_Y, resources, context
             )
             MainMenuActivity.needsReset = false
         }
@@ -308,10 +317,16 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
         val monitorThread = Thread(this, "main game ticker")
         monitorThread.priority = Thread.MIN_PRIORITY
         monitorThread.start()
-        val displaymetrics = DisplayMetrics()
-        (context as Activity).windowManager.defaultDisplay.getMetrics(displaymetrics)
-        val screenWidth = displaymetrics.widthPixels
-        val screenHeight = displaymetrics.heightPixels
+        val displayMetrics = DisplayMetrics()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            (context as Activity).display!!.getMetrics(displayMetrics)
+        } else {
+            (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
+        }
+
+        val screenWidth = displayMetrics.widthPixels
+        val screenHeight = displayMetrics.heightPixels
         viewport[0, 0, screenWidth] = screenHeight
         setOnTouchListener(this)
     }

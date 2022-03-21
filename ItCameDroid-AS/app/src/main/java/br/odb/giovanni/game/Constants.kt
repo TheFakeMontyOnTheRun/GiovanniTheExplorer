@@ -1,8 +1,8 @@
 package br.odb.giovanni.game
 
 object Constants {
-    const val BASETERRAINRESID = 0
-    const val WALLRESID = 1
-    const val SIZEX = 50
-    const val SIZEY = 50
+    const val NON_BLOCKING_TILE = 0
+    const val BLOCKING_TILE = 1
+    const val SIZE_X = 50
+    const val SIZE_Y = 50
 }

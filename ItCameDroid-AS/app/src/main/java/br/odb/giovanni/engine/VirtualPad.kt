@@ -7,9 +7,10 @@ import br.odb.giovanni.menus.VirtualPadClient
 
 class VirtualPad(private val listener: VirtualPadClient) : Drawable() {
     val keyMap: BooleanArray
-    private val vKeys: Array<Rect?>
+    private val vKeys: Array<Rect?> = arrayOfNulls(4)
     private val lastTouch1: Rect
-    private val paint: Paint
+    private val paint: Paint = Paint()
+
     override fun setBounds(bounds: Rect) {
         setBounds(bounds.left, bounds.top, bounds.right, bounds.bottom)
     }
@@ -79,8 +80,6 @@ class VirtualPad(private val listener: VirtualPadClient) : Drawable() {
     }
 
     init {
-        paint = Paint()
-        vKeys = arrayOfNulls(4)
         vKeys[0] = Rect()
         vKeys[1] = Rect()
         vKeys[2] = Rect()

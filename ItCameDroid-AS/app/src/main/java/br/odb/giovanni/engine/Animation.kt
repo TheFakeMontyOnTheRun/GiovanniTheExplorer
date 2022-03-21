@@ -1,62 +1,49 @@
 package br.odb.giovanni.engine
 
-class Animation : Runnable {
-    @JvmField
-    var play: Boolean
-    private var frames: ArrayList<Bitmap>?
+import android.graphics.Bitmap
+
+class Animation {
+    var playing: Boolean
+    var loop = true
+
+    private val frames = ArrayList<Bitmap>()
     private var currentFrame: Int
-    private var loop: Boolean
-    override fun run() {
-        while (play) {
-            tick()
-        }
-    }
 
     fun setCurrentFrame(currentFrame: Int) {
         this.currentFrame = currentFrame
     }
 
-    fun setLoop(loop: Boolean) {
-        this.loop = loop
-    }
-
     fun addFrame(bitmap: Bitmap) {
-        frames!!.add(bitmap)
+        frames.add(bitmap)
     }
 
     val currentFrameReference: Bitmap
         get() = getFrameReference(currentFrame)
 
     fun getFrameReference(i: Int): Bitmap {
-        return frames!![i]
+        return frames[i]
     }
 
     fun tick() {
-        if (play) {
+        if (playing) {
             currentFrame++
         }
-        if (currentFrame == frames!!.size) {
+        if (currentFrame == frames.size) {
             currentFrame = 0
             if (!loop) {
-                play = false
+                playing = false
             }
         }
     }
 
     fun prepareForGC() {
-        play = false
-        Thread.yield()
-        for (f in frames!!) {
-            f.prepareForGC()
-        }
-        frames!!.clear()
-        frames = null
+        playing = false
+        frames.clear()
     }
 
     init {
-        frames = ArrayList()
         currentFrame = 0
         loop = true
-        play = true
+        playing = true
     }
 }
