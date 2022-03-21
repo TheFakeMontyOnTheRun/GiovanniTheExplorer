@@ -1,161 +1,161 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	tools:context="br.odb.giovanni.menus.HowToPlayActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="br.odb.giovanni.menus.HowToPlayActivity">
 
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			android:text="Como jogar este jogo:"
-			android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Como jogar este jogo:"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			android:text="(deslize para ver tudo)"
-			android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="(deslize para ver tudo)"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="#22FFFFFF"
-			android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#22FFFFFF"
+            android:orientation="horizontal">
 
-			<ImageView
-				android:layout_width="0dp"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:src="@drawable/hero2_1"
-				android:contentDescription="TODO" />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:contentDescription="TODO"
+                android:src="@drawable/hero2_1" />
 
-			<TextView
-				android:layout_width="0dp"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:gravity="center_vertical"
-				android:text="Giovanni é um explorador que se viu numa situação complicada: ao explorar uma caverna que poderia conter minérios valiosos, acabou encontrando monstrinhos famintos!" />
-		</LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Giovanni é um explorador que se viu numa situação complicada: ao explorar uma caverna que poderia conter minérios valiosos, acabou encontrando monstrinhos famintos!" />
+        </LinearLayout>
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="#55FFFFFF"
-			android:gravity="center_vertical"
-			android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#55FFFFFF"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-			<TextView
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:gravity="center_vertical"
-				android:text="Agora, ele deve aguardar que a dinamite exploda para abrir caminho para sua saída." />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Agora, ele deve aguardar que a dinamite exploda para abrir caminho para sua saída." />
 
-			<ImageView
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:src="@drawable/bomba5"
-				android:contentDescription="TODO" />
-		</LinearLayout>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="TODO"
+                android:src="@drawable/bomba5" />
+        </LinearLayout>
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="#22FFFFFF"
-			android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#22FFFFFF"
+            android:orientation="horizontal">
 
-			<ImageView
-				android:layout_width="0dp"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:src="@drawable/monster_3"
-				android:contentDescription="TODO" />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:contentDescription="TODO"
+                android:src="@drawable/monster_3" />
 
-			<TextView
-				android:layout_width="0dp"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:gravity="center_vertical"
-				android:text="Mas cuidado, os monstros estão com fome e comerão tudo que estiver em seu caminho! O melhor jeito de se livrar deles é fazer um comer o outro." />
-		</LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Mas cuidado, os monstros estão com fome e comerão tudo que estiver em seu caminho! O melhor jeito de se livrar deles é fazer um comer o outro." />
+        </LinearLayout>
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="#55FFFFFF"
-			android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#55FFFFFF"
+            android:orientation="horizontal">
 
-			<TextView
-				android:layout_width="0dp"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:gravity="center_vertical"
-				android:text="Os monstros vão sempre saindo de dentro do vulcão de geleca. Fique longe!" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Os monstros vão sempre saindo de dentro do vulcão de geleca. Fique longe!" />
 
-			<ImageView
-				android:layout_width="0dp"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:src="@drawable/vulcan_02"
-				android:contentDescription="TODO" />
-		</LinearLayout>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:contentDescription="TODO"
+                android:src="@drawable/vulcan_02" />
+        </LinearLayout>
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="#22FFFFFF"
-			android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#22FFFFFF"
+            android:orientation="horizontal">
 
-			<ImageView
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:src="@drawable/control_brown"
-				android:contentDescription="TODO" />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="TODO"
+                android:src="@drawable/control_brown" />
 
-			<TextView
-				android:layout_width="0dp"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:gravity="center_vertical"
-				android:text="Use as direções para guiar Giovanni pela caverna, enquanto espera o dinamite explodir." />
-		</LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Use as direções para guiar Giovanni pela caverna, enquanto espera o dinamite explodir." />
+        </LinearLayout>
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="#55FFFFFF"
-			android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#55FFFFFF"
+            android:orientation="horizontal">
 
-			<TextView
-				android:layout_width="1dp"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:gravity="center_vertical"
-				android:text="Use o mapa para se guiar em regiões muito apertadas. a amarelo indica as paredes da caverna. Pontos azuis indicam monstros, vulcões, a dinamite e o seu personagem." />
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Use o mapa para se guiar em regiões muito apertadas. a amarelo indica as paredes da caverna. Pontos azuis indicam monstros, vulcões, a dinamite e o seu personagem." />
 
-			<ImageView
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:src="@drawable/map"
-				android:contentDescription="TODO" />
-		</LinearLayout>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="TODO"
+                android:src="@drawable/map" />
+        </LinearLayout>
 
-		<Button
-			android:id="@+id/btnBack"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="Voltar" />
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Voltar" />
 
-	</LinearLayout>
+    </LinearLayout>
 
 </ScrollView>

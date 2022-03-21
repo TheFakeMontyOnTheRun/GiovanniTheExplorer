@@ -4,9 +4,10 @@ import kotlin.math.abs
 
 class Vec2 {
     @JvmField
-	var x: Float
+    var x: Float
+
     @JvmField
-	var y: Float
+    var y: Float
 
     constructor(aX: Float, aY: Float) {
         x = aX

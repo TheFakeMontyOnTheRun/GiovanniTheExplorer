@@ -12,8 +12,11 @@ import android.view.View.OnTouchListener
 import br.odb.giovanni.R
 import br.odb.giovanni.engine.Constants
 import br.odb.giovanni.engine.VirtualPad
-import br.odb.giovanni.game.*
+import br.odb.giovanni.game.Actor
+import br.odb.giovanni.game.Level
 import br.odb.giovanni.game.LevelFactory.createRandomLevel
+import br.odb.giovanni.game.Miner
+import br.odb.giovanni.game.Vec2
 import java.util.*
 
 class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runnable,
@@ -82,7 +85,7 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
 
     // Verify that the device has gamepad buttons, control sticks, or both.
     private val gameControllerIds: ArrayList<Int>
-        private get() {
+        get() {
             val gameControllerDeviceIds = ArrayList<Int>()
             val deviceIds = InputDevice.getDeviceIds()
             for (deviceId in deviceIds) {
@@ -272,8 +275,10 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
         private const val KB_RIGHT = 1
         private const val KB_DOWN = 2
         private const val KB_LEFT = 3
+
         @JvmField
         var playSounds = true
+
         @JvmField
         val viewport = Rect()
         private var level: Level? = null

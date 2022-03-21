@@ -6,7 +6,6 @@ import android.graphics.Paint
 import br.odb.giovanni.game.Actor
 import br.odb.giovanni.game.Vec2
 import java.util.*
-import kotlin.collections.ArrayList
 
 open class TileArea protected constructor(
     i: Int,

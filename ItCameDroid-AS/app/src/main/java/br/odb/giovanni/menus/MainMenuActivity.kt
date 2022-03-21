@@ -10,7 +10,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 
 class MainMenuActivity : Activity(), View.OnClickListener {
 
-    private lateinit var swEnableSound : SwitchMaterial
+    private lateinit var swEnableSound: SwitchMaterial
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

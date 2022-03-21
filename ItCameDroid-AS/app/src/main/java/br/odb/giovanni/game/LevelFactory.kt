@@ -22,7 +22,7 @@ object LevelFactory {
         level.miner = Miner(resources, context)
         level.motherMonster = arrayOfNulls(3)
         level.motherMonster[0] = MonsterMother(resources!!, context)
-        level.motherMonster[1] = MonsterMother(resources!!, context)
+        level.motherMonster[1] = MonsterMother(resources, context)
         level.motherMonster[2] = MonsterMother(resources, context)
         level.dynamite = Dynamite(resources, context)
         var x: Int

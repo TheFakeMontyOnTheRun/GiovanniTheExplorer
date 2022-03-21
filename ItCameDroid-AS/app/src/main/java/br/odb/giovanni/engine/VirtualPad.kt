@@ -1,9 +1,9 @@
 package br.odb.giovanni.engine
 
 import android.graphics.*
-import br.odb.giovanni.menus.VirtualPadClient
 import android.graphics.drawable.Drawable
 import android.view.MotionEvent
+import br.odb.giovanni.menus.VirtualPadClient
 
 class VirtualPad(private val listener: VirtualPadClient) : Drawable() {
     val keyMap: BooleanArray

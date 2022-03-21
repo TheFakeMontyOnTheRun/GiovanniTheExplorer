@@ -11,11 +11,14 @@ import br.odb.giovanni.menus.ItCameView
 abstract class Actor internal constructor() {
     @JvmField
     var level: Level? = null
+
     @JvmField
     var killed = false
     private var visible = true
+
     @JvmField
     var animation: Animation? = null
+
     @JvmField
     var currentFrame: Bitmap? = null
     var position: Vec2? = null
@@ -29,7 +32,7 @@ abstract class Actor internal constructor() {
     }
 
     private val screenPosition: Vec2
-        private get() {
+        get() {
             val toReturn = Vec2()
             toReturn.x =
                 -Level.camera!!.x + ItCameView.viewport.right / 2.0f + position!!.x - currentFrame!!.androidBitmap!!.width / 2.0f
