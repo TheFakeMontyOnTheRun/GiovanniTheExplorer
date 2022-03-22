@@ -3,22 +3,18 @@ package br.odb.giovanni.engine
 import android.graphics.Bitmap
 
 class Animation {
-    var playing: Boolean
+    var playing = true
     var loop = true
+    var currentFrame: Int = 0
+
+    val currentFrameReference: Bitmap
+        get() = getFrameReference(currentFrame)
 
     private val frames = ArrayList<Bitmap>()
-    private var currentFrame: Int
-
-    fun setCurrentFrame(currentFrame: Int) {
-        this.currentFrame = currentFrame
-    }
 
     fun addFrame(bitmap: Bitmap) {
         frames.add(bitmap)
     }
-
-    val currentFrameReference: Bitmap
-        get() = getFrameReference(currentFrame)
 
     fun getFrameReference(i: Int): Bitmap {
         return frames[i]
@@ -39,11 +35,5 @@ class Animation {
     fun prepareForGC() {
         playing = false
         frames.clear()
-    }
-
-    init {
-        currentFrame = 0
-        loop = true
-        playing = true
     }
 }

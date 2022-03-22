@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Giovanni</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_show_game_outcome">ShowGameOutcomeActivity</string>
     <string name="title_activity_how_to_play">Como jogar</string>
-
+    <string name="enable_sound">Enable sound</string>
+    <string name="play">Jogar</string>
+    <string name="how_to_play">Como jogar</string>
+    <string name="slide_to_read">(deslize para ver tudo)</string>
+    <string name="how_to_play_desc">Como jogar este jogo:</string>
+    <string name="about_giovanni">Giovanni é um explorador que se viu numa situação complicada: ao explorar uma caverna que poderia conter minérios valiosos, acabou encontrando monstrinhos famintos!</string>
+    <string name="watch_for_the_dynamite">Agora, ele deve aguardar que a dinamite exploda para abrir caminho para sua saída.</string>
+    <string name="hungry_monsters">Mas cuidado, os monstros estão com fome e comerão tudo que estiver em seu caminho! O melhor jeito de se livrar deles é fazer um comer o outro.</string>
+    <string name="monsters_behaviour">Os monstros vão sempre saindo de dentro do vulcão de geleca. Fique longe!</string>
+    <string name="how_to_move">Use as direções para guiar Giovanni pela caverna, enquanto espera o dinamite explodir.</string>
+    <string name="how_to_use_map">Use o mapa para se guiar em regiões muito apertadas. a amarelo indica as paredes da caverna. Pontos azuis indicam monstros, vulcões, a dinamite e o seu personagem.</string>
+    <string name="back">Back</string>
+    <string name="game_outcome_text">Play and find out!</string>
+    <string name="live_dynamite">live dynamite</string>
+    <string name="giovanni_our_hero">Giovanni, our hero</string>
+    <string name="hungry_monster">hungry monster</string>
+    <string name="monster_lair_on_the_ground">monster lair on the ground</string>
+    <string name="directions_you_press_to_move">directions you press to move</string>
+    <string name="the_minimap">the minimap</string>
 </resources>

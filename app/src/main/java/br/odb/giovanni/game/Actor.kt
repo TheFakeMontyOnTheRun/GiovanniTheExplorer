@@ -11,13 +11,14 @@ import br.odb.giovanni.menus.ItCameView
 
 abstract class Actor {
 
-    var level: Level? = null
+    enum class ActorStates {
+        STILL, MOVING
+    }
 
+    var level: Level? = null
     var killed = false
     private var visible = true
-
     var animation: Animation = Animation()
-
     var currentFrame: Bitmap? = null
     var position: Vec2 = Vec2()
     var direction = 0
@@ -35,9 +36,9 @@ abstract class Actor {
         get() {
             val toReturn = Vec2()
             toReturn.x =
-                -Level.camera!!.x + ItCameView.viewport.right / 2.0f + position.x - currentFrame!!.width / 2.0f
+                -level!!.camera.x + ItCameView.viewport.right / 2.0f + position.x - currentFrame!!.width / 2.0f
             toReturn.y =
-                -Level.camera!!.y + ItCameView.viewport.bottom / 2.0f + position.y - currentFrame!!.height + Constants.BASE_TILE_HEIGHT / 2.0f
+                -level!!.camera.y + ItCameView.viewport.bottom / 2.0f + position.y - currentFrame!!.height + Constants.BASE_TILE_HEIGHT / 2.0f
             return toReturn
         }
 
@@ -66,17 +67,13 @@ abstract class Actor {
         visible = false
     }
 
-    abstract fun touched(actor: Actor?)
-
-    protected abstract fun didMove()
-
     fun prepareForGC() {
         currentFrame = null
         animation.prepareForGC()
         level = null
     }
 
-    enum class ActorStates {
-        STILL, MOVING
-    }
+    abstract fun touched(actor: Actor?)
+
+    protected abstract fun didMove()
 }

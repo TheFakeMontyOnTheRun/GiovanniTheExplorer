@@ -1,6 +1,6 @@
 package br.odb.giovanni.menus
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.Context
 import android.graphics.*
 import android.os.Build
@@ -23,55 +23,106 @@ import kotlin.system.exitProcess
 
 class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runnable,
     VirtualPadClient, OnTouchListener {
+
     var playing = false
+
     private var timeSinceAcquiredFocus: Long = 0
     private var drawOnScreenController = false
     private val vPad: VirtualPad
     private val keyMap: BooleanArray
-    private val paint: Paint?
+    private val paint: Paint = Paint()
     private val camera: Vec2 = Vec2()
     private val actor: Miner
     override val bitmapOverlay: Bitmap
+    private var level: Level? = null
+
+    companion object {
+        var playSounds = true
+        val viewport = Rect()
+    }
+
+    init {
+        isFocusable = true
+        isClickable = true
+        isLongClickable = true
+        playSounds = enableSounds
+        bitmapOverlay = BitmapFactory.decodeResource(resources, R.drawable.control_brown)
+        vPad = VirtualPad(this)
+        this.requestFocus()
+        this.isFocusableInTouchMode = true
+        keyMap = vPad.keyMap
+        if (MainMenuActivity.needsReset) {
+            level = createRandomLevel(
+                br.odb.giovanni.game.Constants.SIZE_X,
+                br.odb.giovanni.game.Constants.SIZE_Y, resources, context!!
+            )
+            MainMenuActivity.needsReset = false
+        }
+        actor = level!!.miner!!
+        setBackgroundColor(Color.BLACK)
+        val monitorThread = Thread(this, "main game ticker")
+        monitorThread.priority = Thread.MIN_PRIORITY
+        monitorThread.start()
+        val displayMetrics = DisplayMetrics()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            (context as AppCompatActivity).display!!.getMetrics(displayMetrics)
+        } else {
+            (context as AppCompatActivity).windowManager.defaultDisplay.getMetrics(displayMetrics)
+        }
+
+        val screenWidth = displayMetrics.widthPixels
+        val screenHeight = displayMetrics.heightPixels
+        viewport[0, 0, screenWidth] = screenHeight
+        setOnTouchListener(this)
+    }
+
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
         var handled = false
+
         if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-            keyMap[KB_UP] = false
+            keyMap[Constants.KB_UP] = false
             handled = true
         }
         if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-            keyMap[KB_DOWN] = false
+            keyMap[Constants.KB_DOWN] = false
             handled = true
         }
         if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-            keyMap[KB_LEFT] = false
+            keyMap[Constants.KB_LEFT] = false
             handled = true
         }
         if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-            keyMap[KB_RIGHT] = false
+            keyMap[Constants.KB_RIGHT] = false
             handled = true
         }
+
         return handled
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+
         var handled = false
+
         if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-            keyMap[KB_UP] = true
+            keyMap[Constants.KB_UP] = true
             handled = true
         }
         if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-            keyMap[KB_DOWN] = true
+            keyMap[Constants.KB_DOWN] = true
             handled = true
         }
         if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-            keyMap[KB_LEFT] = true
+            keyMap[Constants.KB_LEFT] = true
             handled = true
         }
         if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-            keyMap[KB_RIGHT] = true
+            keyMap[Constants.KB_RIGHT] = true
             handled = true
         }
+
         if (keyCode == KeyEvent.KEYCODE_BACK) exitProcess(0)
+
         return handled
     }
 
@@ -112,8 +163,10 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
         super.onDraw(canvas)
         synchronized(actor) {
             vPad.setBounds(0, 0, width, height)
+
             level!!.setCurrentCamera(camera)
-            if (level != null && paint != null) {
+
+            if (level != null) {
                 level!!.setCurrentCamera(actor.position)
                 level!!.draw(canvas, paint)
             }
@@ -124,7 +177,7 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
 
             drawMap(canvas)
 
-            paint!!.color = Color.YELLOW
+            paint.color = Color.YELLOW
             paint.isFakeBoldText = true
 
             canvas.drawText(
@@ -137,7 +190,7 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
         }
         if (timeSinceAcquiredFocus > 0) {
             val text = "Jogo começando em " + timeSinceAcquiredFocus / 1000
-            paint!!.getTextBounds(text, 0, text.length, bounds)
+            paint.getTextBounds(text, 0, text.length, bounds)
             val prevSize = paint.textSize
             paint.textSize = 30f
             canvas.drawText(text, width / 2.0f - bounds.width(), height / 2.0f, paint)
@@ -149,7 +202,7 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
     private fun drawMap(canvas: Canvas) {
         var x2: Int
         var y2: Int
-        paint!!.color = Color.YELLOW
+        paint.color = Color.YELLOW
         paint.alpha = 128
         for (x in 0 until level!!.width) {
             for (y in 0 until level!!.height) {
@@ -185,7 +238,7 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
         while (running) {
             try {
                 drawOnScreenController = gameControllerIds.size == 0
-                Thread.sleep(INTERVAL)
+                Thread.sleep(Constants.INTERVAL)
             } catch (e: InterruptedException) {
                 e.printStackTrace()
                 running = false
@@ -194,18 +247,18 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
                 continue
             }
             if (timeSinceAcquiredFocus > 0) {
-                timeSinceAcquiredFocus -= INTERVAL
+                timeSinceAcquiredFocus -= Constants.INTERVAL
                 postInvalidate()
                 continue
             }
             handleKeys(keyMap)
-            level!!.tick(INTERVAL)
+            level!!.tick(Constants.INTERVAL)
             if (level!!.gameShouldEnd) {
                 val intent = (this.context as ItCameFromTheCaveActivity)
                     .intent
                 intent.putExtra("result", if (level!!.miner!!.killed) "failure" else "victory")
                 (this.context as ItCameFromTheCaveActivity).setResult(
-                    Activity.RESULT_OK, intent
+                    AppCompatActivity.RESULT_OK, intent
                 )
                 (this.context as ItCameFromTheCaveActivity).finish()
                 return
@@ -220,7 +273,7 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
                     .intent
                 intent.putExtra("result", if (level!!.miner!!.killed) "failure" else "victory")
                 (this.context as ItCameFromTheCaveActivity).setResult(
-                    Activity.RESULT_OK, intent
+                    AppCompatActivity.RESULT_OK, intent
                 )
                 running = false
                 (this.context as ItCameFromTheCaveActivity).finish()
@@ -240,22 +293,22 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
             val currentX = (actor.position.x / Constants.BASE_TILE_WIDTH).toInt()
             val currentY = (actor.position.y / Constants.BASE_TILE_HEIGHT).toInt()
             when {
-                keymap!![KB_UP] -> {
+                keymap!![Constants.KB_UP] -> {
                     y -= (1.25f).toInt()
                     actor.direction = 0
                     handled = true
                 }
-                keymap[KB_DOWN] -> {
+                keymap[Constants.KB_DOWN] -> {
                     y += (1.25f).toInt()
                     actor.direction = 2
                     handled = true
                 }
-                keymap[KB_LEFT] -> {
+                keymap[Constants.KB_LEFT] -> {
                     x -= (1.25f).toInt()
                     actor.direction = 3
                     handled = true
                 }
-                keymap[KB_RIGHT] -> {
+                keymap[Constants.KB_RIGHT] -> {
                     actor.direction = 1
                     x += (1.25f).toInt()
                     handled = true
@@ -277,57 +330,5 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
 
     override fun onTouch(v: View, event: MotionEvent): Boolean {
         return vPad.onTouchEvent(event)
-    }
-
-    companion object {
-        private const val INTERVAL: Long = 75
-        private const val KB_UP = 0
-        private const val KB_RIGHT = 1
-        private const val KB_DOWN = 2
-        private const val KB_LEFT = 3
-
-
-        var playSounds = true
-
-
-        val viewport = Rect()
-        private var level: Level? = null
-    }
-
-    init {
-        isFocusable = true
-        isClickable = true
-        isLongClickable = true
-        playSounds = enableSounds
-        bitmapOverlay = BitmapFactory.decodeResource(resources, R.drawable.control_brown)
-        vPad = VirtualPad(this)
-        this.requestFocus()
-        this.isFocusableInTouchMode = true
-        keyMap = vPad.keyMap
-        if (MainMenuActivity.needsReset) {
-            level = createRandomLevel(
-                br.odb.giovanni.game.Constants.SIZE_X,
-                br.odb.giovanni.game.Constants.SIZE_Y, resources, context
-            )
-            MainMenuActivity.needsReset = false
-        }
-        actor = level!!.miner!!
-        paint = Paint()
-        setBackgroundColor(Color.BLACK)
-        val monitorThread = Thread(this, "main game ticker")
-        monitorThread.priority = Thread.MIN_PRIORITY
-        monitorThread.start()
-        val displayMetrics = DisplayMetrics()
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            (context as Activity).display!!.getMetrics(displayMetrics)
-        } else {
-            (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
-        }
-
-        val screenWidth = displayMetrics.widthPixels
-        val screenHeight = displayMetrics.heightPixels
-        viewport[0, 0, screenWidth] = screenHeight
-        setOnTouchListener(this)
     }
 }

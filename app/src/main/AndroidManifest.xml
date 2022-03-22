@@ -40,9 +40,11 @@
             android:name=".menus.ShowGameOutcomeActivity"
             android:label="@string/title_activity_show_game_outcome"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            />
         <activity
             android:name=".menus.HowToPlayActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:label="@string/title_activity_how_to_play"
             android:screenOrientation="landscape" />
     </application>

@@ -1,16 +1,18 @@
 package br.odb.giovanni.menus
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.KeyEvent
 
-class ItCameFromTheCaveActivity : Activity() {
+class ItCameFromTheCaveActivity : AppCompatActivity() {
+
     private var view: ItCameView? = null
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         view = ItCameView(this, intent.extras!!.getBoolean("hasSound"))
         setContentView(view)
-
         setResult(RESULT_CANCELED)
     }
 
@@ -20,6 +22,7 @@ class ItCameFromTheCaveActivity : Activity() {
 
     override fun onPause() {
         view!!.playing = false
+
         super.onPause()
     }
 
@@ -29,6 +32,7 @@ class ItCameFromTheCaveActivity : Activity() {
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         view!!.playing = hasFocus
+
         super.onWindowFocusChanged(hasFocus)
     }
 }

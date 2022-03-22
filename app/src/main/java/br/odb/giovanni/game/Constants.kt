@@ -5,4 +5,5 @@ object Constants {
     const val BLOCKING_TILE = 1
     const val SIZE_X = 50
     const val SIZE_Y = 50
+    const val LIMIT_MONSTERS_ALIVE = 16
 }

@@ -1,6 +1,6 @@
 package br.odb.giovanni.menus
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -8,12 +8,17 @@ import android.widget.Button
 import br.odb.giovanni.R
 import com.google.android.material.switchmaterial.SwitchMaterial
 
-class MainMenuActivity : Activity(), View.OnClickListener {
+class MainMenuActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var swEnableSound: SwitchMaterial
 
+    companion object {
+        var needsReset = false
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main_menu)
         findViewById<View>(R.id.btnStartGame).setOnClickListener(this)
         findViewById<View>(R.id.btnHelp).setOnClickListener(this)
@@ -39,6 +44,7 @@ class MainMenuActivity : Activity(), View.OnClickListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1) {
             if (resultCode == RESULT_OK && data != null) {
                 val result = data.getStringExtra("result")
@@ -50,9 +56,5 @@ class MainMenuActivity : Activity(), View.OnClickListener {
                 this.startActivity(intent)
             }
         }
-    }
-
-    companion object {
-        var needsReset = false
     }
 }

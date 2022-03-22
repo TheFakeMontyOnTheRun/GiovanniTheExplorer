@@ -1,4 +1,5 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,14 +14,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Como jogar este jogo:"
+            android:text="@string/how_to_play_desc"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="(deslize para ver tudo)"
+            android:text="@string/slide_to_read"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <LinearLayout
@@ -33,15 +34,15 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:contentDescription="TODO"
-                android:src="@drawable/hero2_1" />
+                android:contentDescription="@string/giovanni_our_hero"
+                app:srcCompat="@drawable/hero2_1" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="Giovanni é um explorador que se viu numa situação complicada: ao explorar uma caverna que poderia conter minérios valiosos, acabou encontrando monstrinhos famintos!" />
+                android:text="@string/about_giovanni" />
         </LinearLayout>
 
         <LinearLayout
@@ -56,14 +57,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="Agora, ele deve aguardar que a dinamite exploda para abrir caminho para sua saída." />
+                android:text="@string/watch_for_the_dynamite" />
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:contentDescription="TODO"
-                android:src="@drawable/bomba5" />
+                android:contentDescription="@string/live_dynamite"
+                app:srcCompat="@drawable/bomba5" />
         </LinearLayout>
 
         <LinearLayout
@@ -76,15 +77,16 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:contentDescription="TODO"
-                android:src="@drawable/monster_3" />
+                android:contentDescription="@string/hungry_monster"
+                app:srcCompat="@drawable/monster_3"
+                tools:ignore="ImageContrastCheck" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="Mas cuidado, os monstros estão com fome e comerão tudo que estiver em seu caminho! O melhor jeito de se livrar deles é fazer um comer o outro." />
+                android:text="@string/hungry_monsters" />
         </LinearLayout>
 
         <LinearLayout
@@ -98,14 +100,14 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="Os monstros vão sempre saindo de dentro do vulcão de geleca. Fique longe!" />
+                android:text="@string/monsters_behaviour" />
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:contentDescription="TODO"
-                android:src="@drawable/vulcan_02" />
+                android:contentDescription="@string/monster_lair_on_the_ground"
+                app:srcCompat="@drawable/vulcan_02" />
         </LinearLayout>
 
         <LinearLayout
@@ -118,15 +120,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:contentDescription="TODO"
-                android:src="@drawable/control_brown" />
+                android:contentDescription="@string/directions_you_press_to_move"
+                app:srcCompat="@drawable/control_brown" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="Use as direções para guiar Giovanni pela caverna, enquanto espera o dinamite explodir." />
+                android:text="@string/how_to_move" />
         </LinearLayout>
 
         <LinearLayout
@@ -140,21 +142,21 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="Use o mapa para se guiar em regiões muito apertadas. a amarelo indica as paredes da caverna. Pontos azuis indicam monstros, vulcões, a dinamite e o seu personagem." />
+                android:text="@string/how_to_use_map" />
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:contentDescription="TODO"
-                android:src="@drawable/map" />
+                android:contentDescription="@string/the_minimap"
+                app:srcCompat="@drawable/map" />
         </LinearLayout>
 
         <Button
             android:id="@+id/btnBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Voltar" />
+            android:text="@string/back" />
 
     </LinearLayout>
 

@@ -8,42 +8,12 @@ import br.odb.giovanni.R
 import br.odb.giovanni.engine.Animation
 import br.odb.giovanni.menus.ItCameView
 
-class Miner(resources: Resources?, context: Context?) : Actor() {
+class Miner(resources: Resources, context: Context) : Actor() {
 
     //WTF - what was I smoking when I created this?!
     private val minerLocalAnimation: Array<Animation?> = arrayOfNulls(4)
 
     private var stepSound: MediaPlayer? = null
-
-    public override fun didMove() {
-        if (stepSound != null) {
-            stepSound!!.start()
-        }
-    }
-
-    override var state: ActorStates
-        get() = super.state
-        set(state) {
-            super.state = state
-            if (state === ActorStates.STILL) try {
-                minerLocalAnimation[super.direction]!!.setCurrentFrame(0)
-                currentFrame = minerLocalAnimation[super.direction]!!.currentFrameReference
-            } catch (ignored: Exception) {
-            }
-        }
-
-    override fun tick(timeInMS: Long) {
-        if (state === ActorStates.MOVING) {
-            minerLocalAnimation[super.direction]!!.tick()
-            currentFrame = minerLocalAnimation[super.direction]!!.currentFrameReference
-        }
-    }
-
-    override fun touched(actor: Actor?) {
-        if (actor is Monster) {
-            kill()
-        }
-    }
 
     init {
         minerLocalAnimation[0] = Animation()
@@ -67,10 +37,38 @@ class Miner(resources: Resources?, context: Context?) : Actor() {
         minerLocalAnimation[3]!!.addFrame(BitmapFactory.decodeResource(resources, R.drawable.hero3_3))
         minerLocalAnimation[3]!!.addFrame(BitmapFactory.decodeResource(resources, R.drawable.hero3_4))
 
-        currentFrame = minerLocalAnimation[super.direction]!!.getFrameReference(0)
-
         if (ItCameView.playSounds) {
             stepSound = MediaPlayer.create(context, R.raw.steps)
+        }
+    }
+
+    public override fun didMove() {
+        if (stepSound != null) {
+            stepSound!!.start()
+        }
+    }
+
+    override var state: ActorStates
+        get() = super.state
+        set(state) {
+            super.state = state
+            if (state === ActorStates.STILL) try {
+                minerLocalAnimation[super.direction]!!.currentFrame = 0
+                currentFrame = minerLocalAnimation[super.direction]!!.currentFrameReference
+            } catch (ignored: Exception) {
+            }
+        }
+
+    override fun tick(timeInMS: Long) {
+        if (state === ActorStates.MOVING) {
+            minerLocalAnimation[super.direction]!!.tick()
+            currentFrame = minerLocalAnimation[super.direction]!!.currentFrameReference
+        }
+    }
+
+    override fun touched(actor: Actor?) {
+        if (actor is Monster) {
+            kill()
         }
     }
 }

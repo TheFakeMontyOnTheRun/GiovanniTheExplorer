@@ -6,11 +6,17 @@ import android.media.MediaPlayer
 import br.odb.giovanni.R
 import br.odb.giovanni.engine.Constants
 
-class Monster(resources: Resources?, kill: MediaPlayer?) : Actor() {
+class Monster(resources: Resources, private val kill: MediaPlayer) : Actor() {
 
     var actorTarget: Actor? = null
     private var timeToMove: Long = 0
-    private val kill: MediaPlayer?
+
+    init {
+        animation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.monster_3))
+        animation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.monster_4))
+        direction = 3
+    }
+
     override fun tick(timeInMS: Long) {
         super.tick(timeInMS)
         timeToMove -= timeInMS
@@ -71,18 +77,10 @@ class Monster(resources: Resources?, kill: MediaPlayer?) : Actor() {
 
     override fun touched(actor: Actor?) {
         if (actor is Monster) {
-            kill?.start()
+            kill.start()
             kill()
         }
     }
 
     public override fun didMove() {}
-
-    init {
-        animation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.monster_3))
-        animation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.monster_4))
-        currentFrame = animation.getFrameReference(0)
-        this.kill = kill
-        direction = 3
-    }
 }

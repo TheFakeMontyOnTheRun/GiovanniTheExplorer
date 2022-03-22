@@ -8,11 +8,31 @@ import br.odb.giovanni.R
 import br.odb.giovanni.engine.Animation
 import br.odb.giovanni.menus.ItCameView
 
-class Dynamite(resources: Resources?, context: Context?) : Actor() {
+class Dynamite(resources: Resources, context: Context) : Actor() {
 
     var timeToBlow: Long = (100 * 1000).toLong()
     private val blowAnimation: Animation = Animation()
     private var boomSound: MediaPlayer? = null
+
+    init {
+        animation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.bomba1))
+        animation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.bomba2))
+        animation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.bomba3))
+        animation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.bomba4))
+        animation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.bomba5))
+        blowAnimation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.boom_03))
+        blowAnimation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.boom_02))
+        blowAnimation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.boom_01))
+        blowAnimation.loop = false
+
+        currentFrame = animation.getFrameReference(0)
+
+        if (ItCameView.playSounds) {
+            boomSound = MediaPlayer.create(context, R.raw.boom)
+        }
+
+        direction = 3
+    }
 
     override fun tick(timeInMS: Long) {
         super.tick(timeInMS)
@@ -35,22 +55,4 @@ class Dynamite(resources: Resources?, context: Context?) : Actor() {
     }
 
     public override fun didMove() {}
-
-    init {
-        animation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.bomba1))
-        animation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.bomba2))
-        animation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.bomba3))
-        animation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.bomba4))
-        animation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.bomba5))
-        blowAnimation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.boom_03))
-        blowAnimation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.boom_02))
-        blowAnimation.addFrame(BitmapFactory.decodeResource(resources, R.drawable.boom_01))
-        blowAnimation.loop = false
-
-        currentFrame = animation.getFrameReference(0)
-        if (ItCameView.playSounds) {
-            boomSound = MediaPlayer.create(context, R.raw.boom)
-        }
-        direction = 3
-    }
 }

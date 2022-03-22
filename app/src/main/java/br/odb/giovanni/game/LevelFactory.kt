@@ -7,7 +7,7 @@ import kotlin.math.abs
 
 object LevelFactory {
 
-    fun createRandomLevel(i: Int, j: Int, resources: Resources?, context: Context?): Level {
+    fun createRandomLevel(i: Int, j: Int, resources: Resources, context: Context): Level {
 
         val tilePaletteIndexes = intArrayOf(R.drawable.cave_floor2, R.drawable.cave_floor)
         val wallPaletteIndexes = intArrayOf(R.drawable.cave2, R.drawable.cave)
@@ -25,7 +25,7 @@ object LevelFactory {
 
         level.miner = Miner(resources, context)
         level.motherMonster = arrayOfNulls(3)
-        level.motherMonster[0] = MonsterMother(resources!!, context)
+        level.motherMonster[0] = MonsterMother(resources, context)
         level.motherMonster[1] = MonsterMother(resources, context)
         level.motherMonster[2] = MonsterMother(resources, context)
         level.dynamite = Dynamite(resources, context)
