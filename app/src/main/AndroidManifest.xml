@@ -5,18 +5,27 @@
     android:versionCode="6"
     android:versionName="1.3">
 
-    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
 
-    <uses-feature android:name="android.hardware.gamepad" android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.gamepad"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="true" />
 
     <application
         android:name=".menus.GiovanniApplication"
         android:allowBackup="false"
-        android:isGame="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="true"
         android:icon="@drawable/icon"
-        android:label="@string/app_name">
+        android:isGame="true"
+        android:label="@string/app_name"
+        android:banner="@drawable/banner_giovanni">
         <activity
             android:name=".menus.ItCameFromTheCaveActivity"
             android:screenOrientation="landscape"
@@ -40,18 +49,23 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".menus.ShowGameOutcomeActivity"
             android:label="@string/title_activity_show_game_outcome"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
-            />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
             android:name=".menus.HowToPlayActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:label="@string/title_activity_how_to_play"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
     </application>
 
 </manifest>
