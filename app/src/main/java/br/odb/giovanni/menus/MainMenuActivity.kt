@@ -1,16 +1,16 @@
 package br.odb.giovanni.menus
 
-import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.Switch
+import androidx.appcompat.app.AppCompatActivity
 import br.odb.giovanni.R
-import com.google.android.material.switchmaterial.SwitchMaterial
 
 class MainMenuActivity : AppCompatActivity(), View.OnClickListener {
 
-    private lateinit var swEnableSound: SwitchMaterial
+    private lateinit var swEnableSound: Switch
 
     companion object {
         var needsReset = false

@@ -32,7 +32,7 @@
             android:layout_marginBottom="22dp"
             android:text="@string/how_to_play" />
 
-        <com.google.android.material.switchmaterial.SwitchMaterial
+        <Switch
             android:id="@+id/swEnableSound"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
