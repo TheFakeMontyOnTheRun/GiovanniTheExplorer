@@ -1,19 +1,49 @@
 package br.odb.giovanni.menus
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.CompoundButton
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import br.odb.giovanni.R
 
-class MainMenuActivity : AppCompatActivity(), View.OnClickListener {
+class MainMenuActivity : AppCompatActivity(), View.OnClickListener,
+	CompoundButton.OnCheckedChangeListener {
 
 	private lateinit var swEnableSound: Switch
+	private var mp: MediaPlayer? = null
 
-	companion object {
-		var needsReset = false
+	override fun onPause() {
+		if (mp != null) {
+			mp!!.pause()
+			mp!!.release()
+		}
+		mp = null
+		super.onPause()
+	}
+
+	override fun onResume() {
+		super.onResume()
+		if (swEnableSound.isChecked) {
+			mp = MediaPlayer.create(this, R.raw.title)
+			mp!!.isLooping = true
+			mp!!.start()
+		}
+	}
+
+
+	override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
+		if (isChecked) {
+			mp = MediaPlayer.create(this, R.raw.title)
+			mp!!.isLooping = true
+			mp!!.start()
+		} else if (mp != null) {
+			mp!!.stop()
+			mp = null
+		}
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,13 +56,14 @@ class MainMenuActivity : AppCompatActivity(), View.OnClickListener {
 		(findViewById<View>(R.id.btnStartGame) as Button).requestFocus()
 		swEnableSound.isChecked = (application as GiovanniApplication)
 			.mayEnableSound()
+
+		swEnableSound.setOnCheckedChangeListener(this)
 	}
 
 	override fun onClick(v: View) {
 		var intent: Intent? = null
 		when (v.id) {
 			R.id.btnStartGame -> {
-				needsReset = true
 				intent = Intent(this, ItCameFromTheCaveActivity::class.java)
 				val bundle = Bundle()
 				bundle.putBoolean("hasSound", swEnableSound.isChecked)
