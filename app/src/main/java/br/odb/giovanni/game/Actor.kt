@@ -50,7 +50,10 @@ abstract class Actor {
 			return
 		}
 		try {
-			canvas!!.drawBitmap(currentFrame!!, screenPosition.x, screenPosition.y, paint)
+			if (currentFrame != null && canvas != null && paint != null) {
+				canvas.drawBitmap(currentFrame!!, screenPosition.x, screenPosition.y, paint)
+			}
+
 		} catch (e: Exception) {
 			e.printStackTrace()
 		}
