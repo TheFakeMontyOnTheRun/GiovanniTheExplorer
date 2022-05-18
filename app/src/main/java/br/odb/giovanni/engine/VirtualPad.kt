@@ -20,14 +20,16 @@ class VirtualPad(private val listener: VirtualPadClient) : Drawable() {
 		super.setBounds(left, top, right, bottom)
 		val width = right - left
 		val height = bottom - left
-		vKeys[0][(width * 15L / 100L).toInt(), (height * 30L / 100L).toInt(), (width * 20L / 100L).toInt()] =
-			(height * 40L / 100L).toInt()
-		vKeys[1][(width * 25L / 100L).toInt(), (height * 40L / 100L).toInt(), (width * 30L / 100L).toInt()] =
-			(height * 50L / 100L).toInt()
-		vKeys[2][(width * 15L / 100L).toInt(), (height * 50L / 100L).toInt(), (width * 20L / 100L).toInt()] =
-			(height * 60L / 100L).toInt()
-		vKeys[3][(width * 5L / 100L).toInt(), (height * 40L / 100L).toInt(), (width * 10L / 100L).toInt()] =
-			(height * 50L / 100L).toInt()
+
+
+		vKeys[0][(width * 15L / 100L).toInt(), (height * 30L / 100L).toInt(),
+				(width * 20L / 100L).toInt()] = (height * 40L / 100L).toInt()
+		vKeys[1][(width * 25L / 100L).toInt(), (height * 40L / 100L).toInt(),
+				(width * 30L / 100L).toInt()] = (height * 50L / 100L).toInt()
+		vKeys[2][(width * 15L / 100L).toInt(), (height * 50L / 100L).toInt(),
+				(width * 20L / 100L).toInt()] = (height * 60L / 100L).toInt()
+		vKeys[3][(width * 5L / 100L).toInt(), (height * 40L / 100L).toInt(),
+				(width * 10L / 100L).toInt()] = (height * 50L / 100L).toInt()
 	}
 
 	override fun draw(canvas: Canvas) {
