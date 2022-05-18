@@ -184,15 +184,15 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
 			paint.isFakeBoldText = true
 
 			canvas.drawText(
-				"Você derrotou " + level!!.dead
-						+ " monstros; Tempo para a detonação: "
+				"You overcame " + level!!.dead
+						+ " ${ if (level!!.dead == 1) "monster" else "monsters"}; Time until the bomb goes off: "
 						+ level!!.dynamite!!.timeToBlow / 1000 + "s", 0f, (
 						height - 50).toFloat(), paint
 			)
 			paint.isFakeBoldText = false
 		}
 		if (timeSinceAcquiredFocus > 0) {
-			val text = "Jogo começando em " + timeSinceAcquiredFocus / 1000
+			val text = "The game starts in " + timeSinceAcquiredFocus / 1000
 			paint.getTextBounds(text, 0, text.length, bounds)
 			val prevSize = paint.textSize
 			paint.textSize = 30f

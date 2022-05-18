@@ -19,8 +19,8 @@ class ShowGameOutcomeActivity : AppCompatActivity(), View.OnClickListener {
 
 		setContentView(R.layout.activity_show_game_outcome)
 
-		val outcome1 = "Parabéns, você fugiu da caverna!"
-		val outcome2 = "Que pena! Você foi derrotado. Fim de jogo!"
+		val outcome1 = "Congratulations, you escaped the mine!"
+		val outcome2 = "Game Over!"
 		val victory = intent.extras!!.getString("result").equals("victory")
 		val tvOutcome: TextView = findViewById<View>(R.id.tvOutcome) as TextView
 
