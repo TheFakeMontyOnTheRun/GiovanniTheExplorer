@@ -48,13 +48,12 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
 		this.requestFocus()
 		this.isFocusableInTouchMode = true
 		keyMap = vPad.keyMap
-		if (MainMenuActivity.needsReset) {
-			level = createRandomLevel(
-				br.odb.giovanni.game.Constants.SIZE_X,
-				br.odb.giovanni.game.Constants.SIZE_Y, resources, context!!
-			)
-			MainMenuActivity.needsReset = false
-		}
+
+		level = createRandomLevel(
+			br.odb.giovanni.game.Constants.SIZE_X,
+			br.odb.giovanni.game.Constants.SIZE_Y, resources, context!!
+		)
+
 		actor = level!!.miner!!
 		setBackgroundColor(Color.BLACK)
 		val monitorThread = Thread(this, "main game ticker")
@@ -208,32 +207,42 @@ class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runn
 		var y2: Int
 		paint.color = Color.YELLOW
 		paint.alpha = 128
-		val mapSize = 5
+		var mapSize = 5
+
+		val startX = viewport.width() - (mapSize * level!!.width)
+
 		for (x in 0 until level!!.width) {
 			for (y in 0 until level!!.height) {
 				if (!level!!.mayMoveTo(x, y)) {
 					canvas.drawRect(
-						(x * mapSize).toFloat(),
+						startX + (x * mapSize).toFloat(),
 						(y * mapSize).toFloat(),
-						((x + 1) * mapSize).toFloat(),
+						startX + ((x + 1) * mapSize).toFloat(),
 						((y + 1) * mapSize).toFloat(),
 						paint
 					)
 				}
 			}
 		}
-		paint.color = Color.BLUE
+
 		paint.alpha = 128
 		for (a in level!!.actors) {
 			if (a.killed) {
 				continue
 			}
+
+			if (a is Miner) {
+				paint.color = Color.BLUE
+			} else {
+				paint.color = Color.RED
+			}
+
 			x2 = (a.position.x / Constants.BASE_TILE_WIDTH).toInt()
 			y2 = (a.position.y / Constants.BASE_TILE_HEIGHT).toInt()
 			canvas.drawRect(
-				(x2 * mapSize).toFloat(),
+				startX + (x2 * mapSize).toFloat(),
 				(y2 * mapSize).toFloat(),
-				((x2 + 1) * mapSize).toFloat(),
+				startX + ((x2 + 1) * mapSize).toFloat(),
 				((y2 + 1) * mapSize).toFloat(),
 				paint
 			)
