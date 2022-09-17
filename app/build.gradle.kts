@@ -9,7 +9,8 @@ android {
 		applicationId = "br.DroidDemos"
 		minSdkVersion(19)
 		targetSdkVersion(32)
-		versionCode = 8
+		version = 2.0
+		versionCode = 10
 	}
 	buildTypes.invoke {
 		"release" {

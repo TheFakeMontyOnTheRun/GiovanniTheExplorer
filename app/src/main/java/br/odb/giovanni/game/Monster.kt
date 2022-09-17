@@ -51,14 +51,11 @@ class Monster(resources: Resources, private val kill: MediaPlayer) : Actor() {
 				0f
 			}
 		}
+
+		//try to move around obstacle
 		when {
 			level!!.mayMoveTo(currentX + dirX, currentY + dirY) -> {
-				move(
-					Constants.BASE_TILE_WIDTH * dirX,
-					Constants.BASE_TILE_HEIGHT * dirY
-				)
-
-				//try to move around obstacle
+				move(Constants.BASE_TILE_WIDTH * dirX, Constants.BASE_TILE_HEIGHT * dirY )
 			}
 			level!!.mayMoveTo(currentX, currentY + 0.5f) -> {
 				move(0f, Constants.BASE_TILE_HEIGHT * 0.5f)
