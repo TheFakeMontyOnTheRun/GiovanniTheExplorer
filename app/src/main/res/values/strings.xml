@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">Giovanni</string>
-	<string name="title_activity_show_game_outcome">ShowGameOutcomeActivity</string>
-	<string name="title_activity_how_to_play">How to play</string>
-	<string name="enable_sound">Enable sound</string>
-	<string name="play">Play</string>
-	<string name="how_to_play">How to play</string>
-	<string name="slide_to_read">(scroll to read it all)</string>
-	<string name="how_to_play_desc">How to play this game:</string>
-	<string name="about_giovanni">Giovanni is an explorer in a perilous situation: when exploring a cave that could contain interesting artifacts, he became trapped on a nest of hungry monsters!</string>
-	<string name="watch_for_the_dynamite">Now, he must wait for the dynamite to blow off the way for his exit.</string>
-	<string name="hungry_monsters">But be careful! The monsters are really hungry and will eat anything on their way. Take advantage of this to make them eat each other.</string>
-	<string name="monsters_behaviour">The monsters will come out of their nest. Stay away from it!</string>
-	<string name="how_to_move">Use the directions to avoid the perils while you wait for your freedom.</string>
-	<string name="how_to_use_map">Follow the map for a more broad view of our situation. Yellow spots indicates walls, red dots are dangers. You are the blue spot.</string>
-	<string name="back">Back</string>
-	<string name="game_outcome_text">Play and find out!</string>
-	<string name="live_dynamite">live dynamite</string>
-	<string name="giovanni_our_hero">Giovanni, our hero</string>
-	<string name="hungry_monster">hungry monster</string>
-	<string name="monster_lair_on_the_ground">monster lair on the ground</string>
-	<string name="directions_you_press_to_move">directions you press to move</string>
-	<string name="the_minimap">the minimap</string>
+    <string name="app_name">Giovanni</string>
+    <string name="title_activity_show_game_outcome">ShowGameOutcomeActivity</string>
+    <string name="title_activity_how_to_play">How to play</string>
+    <string name="enable_sound">Enable sound</string>
+    <string name="play">Play</string>
+    <string name="how_to_play">How to play</string>
+    <string name="slide_to_read">(scroll to read it all)</string>
+    <string name="how_to_play_desc">How to play this game:</string>
+    <string name="about_giovanni">Giovanni is an explorer in a perilous situation: when exploring a cave that could contain interesting artifacts, he became trapped on a nest of hungry monsters!</string>
+    <string name="watch_for_the_dynamite">Now, he must wait for the dynamite to blow off the way for his exit.</string>
+    <string name="hungry_monsters">But be careful! The monsters are really hungry and will eat anything on their way. Take advantage of this to make them eat each other.</string>
+    <string name="monsters_behaviour">The monsters will come out of their nest. Stay away from it!</string>
+    <string name="how_to_move">Use the directions to avoid the perils while you wait for your freedom.</string>
+    <string name="how_to_use_map">Follow the map for a more broad view of our situation. Yellow spots indicates walls, red dots are dangers. You are the blue spot.</string>
+    <string name="back">Back</string>
+    <string name="live_dynamite">live dynamite</string>
+    <string name="giovanni_our_hero">Giovanni, our hero</string>
+    <string name="hungry_monster">hungry monster</string>
+    <string name="monster_lair_on_the_ground">monster lair on the ground</string>
+    <string name="directions_you_press_to_move">directions you press to move</string>
+    <string name="the_minimap">the minimap</string>
 </resources>

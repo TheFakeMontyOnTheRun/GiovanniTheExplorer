@@ -1,11 +1,21 @@
 package br.odb.giovanni.menus
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Rect
 import android.os.Build
 import android.util.DisplayMetrics
-import android.view.*
+import android.view.InputDevice
+import android.view.KeyEvent
+import android.view.MotionEvent
+import android.view.View
 import android.view.View.OnTouchListener
+import android.view.WindowInsets
+import android.view.WindowMetrics
 import androidx.appcompat.app.AppCompatActivity
 import br.odb.giovanni.R
 import br.odb.giovanni.engine.Constants
@@ -19,333 +29,336 @@ import kotlin.system.exitProcess
 
 
 class ItCameView(context: Context?, enableSounds: Boolean) : View(context), Runnable,
-	VirtualPadClient, OnTouchListener {
+    VirtualPadClient, OnTouchListener {
 
-	var playing = false
+    var playing = false
 
-	private var timeSinceAcquiredFocus: Long = 0
-	private var drawOnScreenController = false
-	private val vPad: VirtualPad
-	private val keyMap: BooleanArray
-	private val paint: Paint = Paint()
-	private val camera: Vec2 = Vec2()
-	private val actor: Miner
-	override val bitmapOverlay: Bitmap
-	private var level: Level? = null
+    private var timeSinceAcquiredFocus: Long = 0
+    private var drawOnScreenController = false
+    private val vPad: VirtualPad
+    private val keyMap: BooleanArray
+    private val paint: Paint = Paint()
+    private val camera: Vec2 = Vec2()
+    private val actor: Miner
+    override val bitmapOverlay: Bitmap
+    private var level: Level? = null
 
-	companion object {
-		var playSounds = true
-		val viewport = Rect()
-	}
+    companion object {
+        var playSounds = true
+        val viewport = Rect()
+    }
 
-	init {
-		isFocusable = true
-		isClickable = true
-		isLongClickable = true
-		playSounds = enableSounds
-		bitmapOverlay = BitmapFactory.decodeResource(resources, R.drawable.control_brown)
-		vPad = VirtualPad(this)
-		this.requestFocus()
-		this.isFocusableInTouchMode = true
-		keyMap = vPad.keyMap
+    init {
+        isFocusable = true
+        isClickable = true
+        isLongClickable = true
+        playSounds = enableSounds
+        bitmapOverlay = BitmapFactory.decodeResource(resources, R.drawable.control_brown)
+        vPad = VirtualPad(this)
+        this.requestFocus()
+        this.isFocusableInTouchMode = true
+        keyMap = vPad.keyMap
 
-		level = createRandomLevel(
-			br.odb.giovanni.game.Constants.SIZE_X,
-			br.odb.giovanni.game.Constants.SIZE_Y, resources, context!!
-		)
+        level = createRandomLevel(
+            br.odb.giovanni.game.Constants.SIZE_X,
+            br.odb.giovanni.game.Constants.SIZE_Y, resources, context!!
+        )
 
-		actor = level!!.miner!!
-		setBackgroundColor(Color.BLACK)
-		val monitorThread = Thread(this, "main game ticker")
-		monitorThread.priority = Thread.MIN_PRIORITY
-		monitorThread.start()
-		val displayMetrics = DisplayMetrics()
+        actor = level!!.miner!!
+        setBackgroundColor(Color.BLACK)
+        val monitorThread = Thread(this, "main game ticker")
+        monitorThread.priority = Thread.MIN_PRIORITY
+        monitorThread.start()
+        val displayMetrics = DisplayMetrics()
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
 
-			val windowMetrics: WindowMetrics =
-				(context as AppCompatActivity).windowManager.currentWindowMetrics
+            val windowMetrics: WindowMetrics =
+                (context as AppCompatActivity).windowManager.currentWindowMetrics
 
-			val insets = windowMetrics.windowInsets
-				.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
+            val insets = windowMetrics.windowInsets
+                .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
 
-			viewport[0, 0, windowMetrics.bounds.width() - insets.left - insets.right] =
-				windowMetrics.bounds.height() - insets.bottom - insets.top
-		} else {
-			(context as AppCompatActivity).windowManager.defaultDisplay.getMetrics(displayMetrics)
+            viewport[0, 0, windowMetrics.bounds.width() - insets.left - insets.right] =
+                windowMetrics.bounds.height() - insets.bottom - insets.top
+        } else {
+            (context as AppCompatActivity).windowManager.defaultDisplay.getMetrics(displayMetrics)
 
-			viewport[0, 0, displayMetrics.widthPixels] = displayMetrics.heightPixels
-		}
+            viewport[0, 0, displayMetrics.widthPixels] = displayMetrics.heightPixels
+        }
 
-		setOnTouchListener(this)
-	}
+        setOnTouchListener(this)
+    }
 
-	override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-		var handled = false
+    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
+        var handled = false
 
-		if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-			keyMap[Constants.KB_UP] = false
-			handled = true
-		}
-		if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-			keyMap[Constants.KB_DOWN] = false
-			handled = true
-		}
-		if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-			keyMap[Constants.KB_LEFT] = false
-			handled = true
-		}
-		if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-			keyMap[Constants.KB_RIGHT] = false
-			handled = true
-		}
+        if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+            keyMap[Constants.KB_UP] = false
+            handled = true
+        }
+        if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+            keyMap[Constants.KB_DOWN] = false
+            handled = true
+        }
+        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+            keyMap[Constants.KB_LEFT] = false
+            handled = true
+        }
+        if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+            keyMap[Constants.KB_RIGHT] = false
+            handled = true
+        }
 
-		return handled
-	}
+        return handled
+    }
 
-	override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
 
-		var handled = false
+        var handled = false
 
-		if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-			keyMap[Constants.KB_UP] = true
-			handled = true
-		}
-		if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-			keyMap[Constants.KB_DOWN] = true
-			handled = true
-		}
-		if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-			keyMap[Constants.KB_LEFT] = true
-			handled = true
-		}
-		if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-			keyMap[Constants.KB_RIGHT] = true
-			handled = true
-		}
+        if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+            keyMap[Constants.KB_UP] = true
+            handled = true
+        }
+        if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+            keyMap[Constants.KB_DOWN] = true
+            handled = true
+        }
+        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+            keyMap[Constants.KB_LEFT] = true
+            handled = true
+        }
+        if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+            keyMap[Constants.KB_RIGHT] = true
+            handled = true
+        }
 
-		if (keyCode == KeyEvent.KEYCODE_BACK) exitProcess(0)
+        if (keyCode == KeyEvent.KEYCODE_BACK) exitProcess(0)
 
-		return handled
-	}
+        return handled
+    }
 
-	override fun onWindowFocusChanged(hasFocus: Boolean) {
-		super.onWindowFocusChanged(hasFocus)
-		val screenWidth = width
-		val screenHeight = height
-		if (hasFocus) {
-			timeSinceAcquiredFocus = 5000
-		}
-		viewport[0, 0, screenWidth] = screenHeight
-	}// This device is a game controller. Store its device ID.
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        val screenWidth = width
+        val screenHeight = height
+        if (hasFocus) {
+            timeSinceAcquiredFocus = 5000
+        }
+        viewport[0, 0, screenWidth] = screenHeight
+    }// This device is a game controller. Store its device ID.
 
-	// Verify that the device has gamepad buttons, control sticks, or both.
-	private val gameControllerIds: ArrayList<Int>
-		get() {
-			val gameControllerDeviceIds = ArrayList<Int>()
-			val deviceIds = InputDevice.getDeviceIds()
-			for (deviceId in deviceIds) {
-				val dev = InputDevice.getDevice(deviceId)
-				val sources = dev.sources
+    // Verify that the device has gamepad buttons, control sticks, or both.
+    private val gameControllerIds: ArrayList<Int>
+        get() {
+            val gameControllerDeviceIds = ArrayList<Int>()
+            val deviceIds = InputDevice.getDeviceIds()
+            for (deviceId in deviceIds) {
+                val dev = InputDevice.getDevice(deviceId)
+                val sources = dev!!.sources
 
-				// Verify that the device has gamepad buttons, control sticks, or both.
-				if (sources and InputDevice.SOURCE_GAMEPAD == InputDevice.SOURCE_GAMEPAD
-					|| (sources and InputDevice.SOURCE_JOYSTICK
-							== InputDevice.SOURCE_JOYSTICK)
-				) {
-					// This device is a game controller. Store its device ID.
-					if (!gameControllerDeviceIds.contains(deviceId)) {
-						gameControllerDeviceIds.add(deviceId)
-					}
-				}
-			}
-			return gameControllerDeviceIds
-		}
+                // Verify that the device has gamepad buttons, control sticks, or both.
+                if (sources and InputDevice.SOURCE_GAMEPAD == InputDevice.SOURCE_GAMEPAD
+                    || (sources and InputDevice.SOURCE_JOYSTICK
+                            == InputDevice.SOURCE_JOYSTICK)
+                ) {
+                    // This device is a game controller. Store its device ID.
+                    if (!gameControllerDeviceIds.contains(deviceId)) {
+                        gameControllerDeviceIds.add(deviceId)
+                    }
+                }
+            }
+            return gameControllerDeviceIds
+        }
 
-	override fun onDraw(canvas: Canvas) {
-		super.onDraw(canvas)
-		synchronized(actor) {
-			vPad.setBounds(0, 0, width, height)
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        synchronized(actor) {
+            vPad.setBounds(0, 0, width, height)
 
-			level!!.setCurrentCamera(camera)
+            level!!.setCurrentCamera(camera)
 
-			if (level != null) {
-				level!!.setCurrentCamera(actor.position)
-				level!!.draw(canvas, paint)
-			}
+            if (level != null) {
+                level!!.setCurrentCamera(actor.position)
+                level!!.draw(canvas, paint)
+            }
 
-			if (drawOnScreenController) {
-				vPad.draw(canvas)
-			}
+            if (drawOnScreenController) {
+                vPad.draw(canvas)
+            }
 
-			drawMap(canvas)
+            drawMap(canvas)
 
-			paint.color = Color.YELLOW
-			paint.isFakeBoldText = true
+            paint.color = Color.YELLOW
+            paint.isFakeBoldText = true
 
-			canvas.drawText(
-				"You overcame " + level!!.dead
-						+ " ${ if (level!!.dead == 1) "monster" else "monsters"}; Time until the bomb goes off: "
-						+ level!!.dynamite!!.timeToBlow / 1000 + "s", 0f, (
-						height - 50).toFloat(), paint
-			)
-			paint.isFakeBoldText = false
-		}
-		if (timeSinceAcquiredFocus > 0) {
-			val text = "The game starts in " + timeSinceAcquiredFocus / 1000
-			paint.getTextBounds(text, 0, text.length, bounds)
-			val prevSize = paint.textSize
-			paint.textSize = 30f
-			canvas.drawText(text, width / 2.0f - bounds.width(), height / 2.0f, paint)
-			paint.textSize = prevSize
-		}
-	}
+            canvas.drawText(
+                "You overcame " + level!!.dead
+                        + " ${if (level!!.dead == 1) "monster" else "monsters"}; Time until the bomb goes off: "
+                        + level!!.dynamite!!.timeToBlow / 1000 + "s", 0f, (
+                        height - 50).toFloat(), paint
+            )
+            paint.isFakeBoldText = false
+        }
+        if (timeSinceAcquiredFocus > 0) {
+            val text = "The game starts in " + timeSinceAcquiredFocus / 1000
+            paint.getTextBounds(text, 0, text.length, bounds)
+            val prevSize = paint.textSize
+            paint.textSize = 30f
+            canvas.drawText(text, width / 2.0f - bounds.width(), height / 2.0f, paint)
+            paint.textSize = prevSize
+        }
+    }
 
-	private val bounds = Rect()
-	private fun drawMap(canvas: Canvas) {
-		var x2: Int
-		var y2: Int
-		paint.color = Color.YELLOW
-		paint.alpha = 128
-		var mapSize = 5
+    private val bounds = Rect()
+    private fun drawMap(canvas: Canvas) {
+        var x2: Int
+        var y2: Int
+        paint.color = Color.YELLOW
+        paint.alpha = 128
+        val mapSize = 5
 
-		val startX = viewport.width() - (mapSize * level!!.width)
+        val startX = viewport.width() - (mapSize * level!!.width)
 
-		for (x in 0 until level!!.width) {
-			for (y in 0 until level!!.height) {
-				if (!level!!.mayMoveTo(x, y)) {
-					canvas.drawRect(
-						startX + (x * mapSize).toFloat(),
-						(y * mapSize).toFloat(),
-						startX + ((x + 1) * mapSize).toFloat(),
-						((y + 1) * mapSize).toFloat(),
-						paint
-					)
-				}
-			}
-		}
+        for (x in 0 until level!!.width) {
+            for (y in 0 until level!!.height) {
+                if (!level!!.mayMoveTo(x, y)) {
+                    canvas.drawRect(
+                        startX + (x * mapSize).toFloat(),
+                        (y * mapSize).toFloat(),
+                        startX + ((x + 1) * mapSize).toFloat(),
+                        ((y + 1) * mapSize).toFloat(),
+                        paint
+                    )
+                }
+            }
+        }
 
-		paint.alpha = 128
-		for (a in level!!.actors) {
-			if (a.killed) {
-				continue
-			}
+        paint.alpha = 128
+        for (a in level!!.actors) {
+            if (a.killed) {
+                continue
+            }
 
-			if (a is Miner) {
-				paint.color = Color.BLUE
-			} else {
-				paint.color = Color.RED
-			}
+            if (a is Miner) {
+                paint.color = Color.BLUE
+            } else {
+                paint.color = Color.RED
+            }
 
-			x2 = (a.position.x / Constants.BASE_TILE_WIDTH).toInt()
-			y2 = (a.position.y / Constants.BASE_TILE_HEIGHT).toInt()
-			canvas.drawRect(
-				startX + (x2 * mapSize).toFloat(),
-				(y2 * mapSize).toFloat(),
-				startX + ((x2 + 1) * mapSize).toFloat(),
-				((y2 + 1) * mapSize).toFloat(),
-				paint
-			)
-		}
-		paint.alpha = 255
-	}
+            x2 = (a.position.x / Constants.BASE_TILE_WIDTH).toInt()
+            y2 = (a.position.y / Constants.BASE_TILE_HEIGHT).toInt()
+            canvas.drawRect(
+                startX + (x2 * mapSize).toFloat(),
+                (y2 * mapSize).toFloat(),
+                startX + ((x2 + 1) * mapSize).toFloat(),
+                ((y2 + 1) * mapSize).toFloat(),
+                paint
+            )
+        }
+        paint.alpha = 255
+    }
 
-	override fun run() {
-		var running = true
-		while (running) {
-			try {
-				drawOnScreenController = gameControllerIds.size == 0
-				Thread.sleep(Constants.INTERVAL)
-			} catch (e: InterruptedException) {
-				e.printStackTrace()
-				running = false
-			}
-			if (!playing) {
-				continue
-			}
-			if (timeSinceAcquiredFocus > 0) {
-				timeSinceAcquiredFocus -= Constants.INTERVAL
-				postInvalidate()
-				continue
-			}
-			handleKeys(keyMap)
-			level!!.tick(Constants.INTERVAL)
-			if (level!!.gameShouldEnd) {
-				val intent = (this.context as ItCameFromTheCaveActivity)
-					.intent
-				intent.putExtra("result", if (level!!.miner!!.killed) "failure" else "victory")
-				(this.context as ItCameFromTheCaveActivity).setResult(
-					AppCompatActivity.RESULT_OK, intent
-				)
-				(this.context as ItCameFromTheCaveActivity).finish()
-				return
-			}
-			if (level!!.dynamite!!.killed
-				&& level!!.dynamite!!.position
-					.isCloseEnoughToConsiderEqualTo(
-						level!!.miner!!.position
-					)
-			) {
-				val intent = (this.context as ItCameFromTheCaveActivity)
-					.intent
-				intent.putExtra("result", if (level!!.miner!!.killed) "failure" else "victory")
-				(this.context as ItCameFromTheCaveActivity).setResult(
-					AppCompatActivity.RESULT_OK, intent
-				)
-				running = false
-				(this.context as ItCameFromTheCaveActivity).finish()
-			}
-			postInvalidate()
-		}
-	}
+    override fun run() {
+        var running = true
+        while (running) {
+            try {
+                drawOnScreenController = gameControllerIds.size == 0
+                Thread.sleep(Constants.INTERVAL)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+                running = false
+            }
+            if (!playing) {
+                continue
+            }
+            if (timeSinceAcquiredFocus > 0) {
+                timeSinceAcquiredFocus -= Constants.INTERVAL
+                postInvalidate()
+                continue
+            }
+            handleKeys(keyMap)
+            level!!.tick(Constants.INTERVAL)
+            if (level!!.gameShouldEnd) {
+                val intent = (this.context as ItCameFromTheCaveActivity)
+                    .intent
+                intent.putExtra("result", if (level!!.miner!!.killed) "failure" else "victory")
+                (this.context as ItCameFromTheCaveActivity).setResult(
+                    AppCompatActivity.RESULT_OK, intent
+                )
+                (this.context as ItCameFromTheCaveActivity).finish()
+                return
+            }
+            if (level!!.dynamite!!.killed
+                && level!!.dynamite!!.position
+                    .isCloseEnoughToConsiderEqualTo(
+                        level!!.miner!!.position
+                    )
+            ) {
+                val intent = (this.context as ItCameFromTheCaveActivity)
+                    .intent
+                intent.putExtra("result", if (level!!.miner!!.killed) "failure" else "victory")
+                (this.context as ItCameFromTheCaveActivity).setResult(
+                    AppCompatActivity.RESULT_OK, intent
+                )
+                running = false
+                (this.context as ItCameFromTheCaveActivity).finish()
+            }
+            postInvalidate()
+        }
+    }
 
-	override fun handleKeys(keymap: BooleanArray?) {
-		if (timeSinceAcquiredFocus > 0) {
-			return
-		}
-		synchronized(actor) {
-			var handled = false
-			var x = 0
-			var y = 0
-			val currentX = (actor.position.x / Constants.BASE_TILE_WIDTH).toInt()
-			val currentY = (actor.position.y / Constants.BASE_TILE_HEIGHT).toInt()
-			when {
-				keymap!![Constants.KB_UP] -> {
-					y -= (1.25f).toInt()
-					actor.direction = 0
-					handled = true
-				}
-				keymap[Constants.KB_DOWN] -> {
-					y += (1.25f).toInt()
-					actor.direction = 2
-					handled = true
-				}
-				keymap[Constants.KB_LEFT] -> {
-					x -= (1.25f).toInt()
-					actor.direction = 3
-					handled = true
-				}
-				keymap[Constants.KB_RIGHT] -> {
-					actor.direction = 1
-					x += (1.25f).toInt()
-					handled = true
-				}
-			}
-			if (handled) {
-				if (level!!.mayMoveTo(currentX + x, currentY + y)) {
-					actor.move(
-						(x * Constants.BASE_TILE_WIDTH).toFloat(), (y
-								* Constants.BASE_TILE_HEIGHT).toFloat()
-					)
-					actor.state = Actor.ActorStates.MOVING
-				}
-			} else actor.state = Actor.ActorStates.STILL
-			if (actor.position.x < 0) actor.position.x = 0f
-			if (actor.position.y < 0) actor.position.y = 0f
-		}
-	}
+    override fun handleKeys(keymap: BooleanArray?) {
+        if (timeSinceAcquiredFocus > 0) {
+            return
+        }
+        synchronized(actor) {
+            var handled = false
+            var x = 0
+            var y = 0
+            val currentX = (actor.position.x / Constants.BASE_TILE_WIDTH).toInt()
+            val currentY = (actor.position.y / Constants.BASE_TILE_HEIGHT).toInt()
+            when {
+                keymap!![Constants.KB_UP] -> {
+                    y -= (1.25f).toInt()
+                    actor.direction = 0
+                    handled = true
+                }
 
-	override fun onTouch(v: View, event: MotionEvent): Boolean {
-		return vPad.onTouchEvent(event)
-	}
+                keymap[Constants.KB_DOWN] -> {
+                    y += (1.25f).toInt()
+                    actor.direction = 2
+                    handled = true
+                }
+
+                keymap[Constants.KB_LEFT] -> {
+                    x -= (1.25f).toInt()
+                    actor.direction = 3
+                    handled = true
+                }
+
+                keymap[Constants.KB_RIGHT] -> {
+                    actor.direction = 1
+                    x += (1.25f).toInt()
+                    handled = true
+                }
+            }
+            if (handled) {
+                if (level!!.mayMoveTo(currentX + x, currentY + y)) {
+                    actor.move(
+                        (x * Constants.BASE_TILE_WIDTH).toFloat(), (y
+                                * Constants.BASE_TILE_HEIGHT).toFloat()
+                    )
+                    actor.state = Actor.ActorStates.MOVING
+                }
+            } else actor.state = Actor.ActorStates.STILL
+            if (actor.position.x < 0) actor.position.x = 0f
+            if (actor.position.y < 0) actor.position.y = 0f
+        }
+    }
+
+    override fun onTouch(v: View, event: MotionEvent): Boolean {
+        return vPad.onTouchEvent(event)
+    }
 }
