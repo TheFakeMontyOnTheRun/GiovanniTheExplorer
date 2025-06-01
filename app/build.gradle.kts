@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId = "br.DroidDemos"
         minSdk = 21
-        targetSdk = 35
+        targetSdk = 36
         version = 2.0
         versionCode = 11
     }
@@ -31,7 +31,7 @@ android {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.extra["kotlin_version"]}")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.extra["kotlinVersion"]}")
     implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.core:core-ktx:1.16.0")
 }
